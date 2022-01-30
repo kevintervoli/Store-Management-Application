@@ -1,0 +1,87 @@
+
+#logB {
+    -fx-background-color: #053C5E;
+    -fx-text-fill: white;
+}
+
+#logB:hover {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-scale-z: 1.1;
+    -fx-background-color: white;
+    -fx-color: #053C5E;
+    -fx-border-color: #053C5E;
+    -fx-text-fill: #053C5E;
+    -fx-border-radius: 4;
+}
+
+#logB2 {
+    -fx-background-color: #053C5E;
+    -fx-text-fill: white;
+}
+
+#logB2:hover {
+    -fx-background-color: white;
+    -fx-color: #053C5E;
+    -fx-border-color: #053C5E;
+    -fx-text-fill: #053C5E;
+    -fx-border-radius: 4;
+}
+
+
+.table-view .column-header,
+.table-view .column-header-background .filler {
+    -fx-background-color:  #6C91C2; 
+}
+.table-view .column-header .label{
+   -fx-text-fill: black;
+   -fx-font-weight: bold; 
+   -fx-alignment: CENTER_LEFT;
+}
+.table-view .cell{
+   -fx-cell-size: 35;
+  -fx-alignment: center-left;
+  -fx-background-color: #C3C9E9;
+  -fx-border-color: #C3C9E9;
+  -fx-text-fill: black;
+  -fx-font-family : "OCR A Extended";
+  -fx-font-size: 11px;
+  -fx-alignment: CENTER_LEFT;
+   
+}
+.table-row-cell:selected {
+   -fx-background-color: whitesmoke; 
+   -fx-text-background-color:  #373F47;
+   
+       
+}
+
+/* scroll bar starts here */
+
+/* The increment and decrement button CSS class of scrollbar */
+.table-view .increment-button ,.table-view .decrement-button {
+    -fx-background-color:transparent;
+	-fx-background-radius: 2em;
+
+}
+
+/* The main scrollbar **track** CSS class  */
+.table-view .scroll-bar:horizontal .track,
+.table-view .scroll-bar:vertical .track{
+	-fx-background-color: transparent;
+	-fx-border-color:derive(#373F47,80%);
+
+	-fx-background-radius: 2em;
+	-fx-border-radius:2em;
+}
+
+/* The main scrollbar **thumb** CSS class which we drag every time (movable) */
+.table-view .scroll-bar:horizontal .thumb,
+.table-view .scroll-bar:vertical .thumb {
+    -fx-background-color:derive( #373F47,90%);
+	-fx-background-insets: 2, 0, 0;
+	-fx-background-radius: 2em;
+
+}
+
+
