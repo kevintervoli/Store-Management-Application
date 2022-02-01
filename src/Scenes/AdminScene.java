@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-
 import ButtonControllers.UserManagement;
 import Login_GUI.Login;
 import User_Profiles.Employe;
@@ -16,21 +15,29 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -40,13 +47,22 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class AdminScene {
-	@SuppressWarnings("unchecked")
-	public static <Products> StackPane createAdminScene() {
+	protected static Button checkStock;
+	protected static Button checkEmploye;
+	protected static Button checkStatistics ;
+	protected static Button logOut;
+	protected static Button employeList ;
+	@SuppressWarnings({ "unchecked", "unused", "hiding" })
+	public static <Products> StackPane createAdminScene() { 
 		Color btnColor= Color.web("#053C5E"); 
 		Color color=Color.web("#FFFFFF");
+		Color tfCol = Color.web("#F9F9FB");
+		Border textFBorder = new Border(new BorderStroke(btnColor, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(0, 0, 2, 0)));
 		Background bckgStyle = new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY));
+		Background tfBack = new Background(new BackgroundFill(tfCol, CornerRadii.EMPTY, Insets.EMPTY));
 		StackPane pane = new StackPane();
 		BorderPane bp = new BorderPane();
 		pane.getStylesheets().add("css/style.css"); 
@@ -70,8 +86,12 @@ public class AdminScene {
 		checkStock.setId("logB");
 		logOut.setId("logB");
 		checkStatistics.setId("logB");
-		
 		employeList.setOnAction(e->{
+  			checkStock.setDisable(true);
+			checkEmploye.setDisable(true);
+			checkStatistics.setDisable(true);
+			logOut.setDisable(true);
+			employeList.setDisable(true);
 			TableView<Employe> empT = new TableView<Employe>();
 			empT.setBackground(bckgStyle);
 			empT.setEditable(true);
@@ -93,8 +113,8 @@ public class AdminScene {
 					e1.printStackTrace();
 				}
 				
+				
 			});
-			
 			TableColumn<Employe,String> surname = new TableColumn<>("SURNAME");
 			surname.setMinWidth(200);
 			surname.setCellValueFactory(new PropertyValueFactory<>("Surname"));
@@ -118,9 +138,23 @@ public class AdminScene {
 			stab.setPrefSize(550, 400);
 			nStage.setScene(scene);
 			nStage.show();
+			nStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+		          public void handle(WindowEvent we) {
+		  			checkStock.setDisable(false);
+					checkEmploye.setDisable(false);
+					checkStatistics.setDisable(false);
+					logOut.setDisable(false);
+					employeList.setDisable(false);
+		          }
+			});
 	
 		});
 		checkStock.setOnAction(e->{
+			checkStock.setDisable(true);
+			checkEmploye.setDisable(true);
+			checkStatistics.setDisable(true);
+			logOut.setDisable(true);
+			employeList.setDisable(true);
 			Color col = Color.web("#FFFFFF");
 			TableView<Products> table = new TableView<Products>();
 			table.setEditable(true);
@@ -146,10 +180,129 @@ public class AdminScene {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			VBox tab = new VBox();
-			tab.getChildren().add(table);
-			tab.setBackground(new Background(new BackgroundFill(col, CornerRadii.EMPTY, Insets.EMPTY)));
+		
+			BorderPane tab = new BorderPane();
+			TextField t1 = new TextField();
+			TextField t2 = new TextField();
+			tab.getStylesheets().add("css/style.css");
+			t1.setFont(Font.font("OCR A Extended",12));
+			t1.setBorder(textFBorder);
+			t1.setBackground(tfBack);
+			t1.setPrefSize(200, 30);
+			t1.setPromptText("Enter the album name :");
+			t2.setPromptText("Enter the quantity :");
+			t2.setFont(Font.font("OCR A Extended",12));
+			t2.setBorder(textFBorder);
+			t2.setBackground(tfBack);
+			t2.setPrefSize(200, 30);
+			Button addStock = new Button("ADD");
+			Button removeStock = new Button("REMOVE");
+			addStock.setId("logB");
+			removeStock.setId("logB");
+			HBox botV = new HBox();
+			botV.getChildren().addAll(t1,t2,addStock,removeStock);
+			botV.setSpacing(8);
+			botV.setAlignment(Pos.CENTER);
+			tab.setCenter(table);
+			tab.setBottom(botV);
+			tab.setPadding(new Insets(10,10,10,10));
+			tab.setPrefSize(570, 200);
 			Stage newStage = new Stage();
+			addStock.setOnAction(new EventHandler<ActionEvent>(){
+				@Override
+				public void handle(ActionEvent arg0) {
+					if(t1.getText().matches("")) {
+						Stage  st= new Stage();
+						Label alertS =new Label("Can not add ore remove an empty field !");
+						alertS.setFont(Font.font("OCR A Extended",17));
+						alertS.setTextFill(Color.RED);
+						StackPane alert = new StackPane();
+						alert.setPrefSize(250, 75);
+						alert.getChildren().add(alertS);
+						Scene scene  = new Scene(alert);
+						st.setScene(scene);
+						st.show();
+						newStage.close();
+						checkStock.setDisable(false);
+						checkEmploye.setDisable(false);
+						checkStatistics.setDisable(false);
+						logOut.setDisable(false);
+						employeList.setDisable(false);
+						newStage.close();
+					}
+					else {
+						try {
+							checkStockValid(t1.getText(),Integer.parseInt(t2.getText()));
+						} catch (NumberFormatException | ClassNotFoundException | IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						checkStock.setDisable(false);
+						checkEmploye.setDisable(false);
+						checkStatistics.setDisable(false);
+						logOut.setDisable(false);
+						employeList.setDisable(false);
+						newStage.close();
+					}
+
+					}				
+			});
+			removeStock.setOnAction(new EventHandler<ActionEvent>() {
+
+				@Override
+				public void handle(ActionEvent arg0) {
+					try {
+						if(t1.getText().matches("")){
+							Stage  st= new Stage();
+							Label alertS =new Label("Can not add ore remove an empty field !");
+							alertS.setFont(Font.font("OCR A Extended",17));
+							alertS.setTextFill(Color.RED);
+							StackPane alert = new StackPane();
+							alert.setPrefSize(250, 75);
+							alert.getChildren().add(alertS);
+							Scene scene  = new Scene(alert);
+							st.setScene(scene);
+							st.show();
+							newStage.close();
+							checkStock.setDisable(false);
+							checkEmploye.setDisable(false);
+							checkStatistics.setDisable(false);
+							logOut.setDisable(false);
+							employeList.setDisable(false);
+							newStage.close();
+			}else {
+				removeProduct(t1.getText(),Integer.parseInt(t2.getText()));
+				checkStock.setDisable(false);
+				checkEmploye.setDisable(false);
+				checkStatistics.setDisable(false);
+				logOut.setDisable(false);
+				employeList.setDisable(false);
+				newStage.close();
+			}
+
+					} catch (ClassNotFoundException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					checkStock.setDisable(false);
+					checkEmploye.setDisable(false);
+					checkStatistics.setDisable(false);
+					logOut.setDisable(false);
+					employeList.setDisable(false);
+					newStage.close();
+
+				}
+				
+			});
+			newStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+		          public void handle(WindowEvent we) {
+		  			checkStock.setDisable(false);
+					checkEmploye.setDisable(false);
+					checkStatistics.setDisable(false);
+					logOut.setDisable(false);
+					employeList.setDisable(false);
+		          }
+			});
 			Scene scene = new Scene(tab);
 			newStage.setScene(scene);
 			newStage.show();
@@ -160,6 +313,20 @@ public class AdminScene {
 			Scene scene = new Scene(UserManagement.createWindow());
 			newStage.setScene(scene);
 			newStage.show();
+			checkStock.setDisable(true);
+			checkEmploye.setDisable(true);
+			checkStatistics.setDisable(true);
+			logOut.setDisable(true);
+			employeList.setDisable(true);
+			newStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+		          public void handle(WindowEvent we) {
+		  			checkStock.setDisable(false);
+					checkEmploye.setDisable(false);
+					checkStatistics.setDisable(false);
+					logOut.setDisable(false);
+					employeList.setDisable(false);
+		          }
+			});
 			
 		});
 		logOut.setOnAction(e->{
@@ -171,11 +338,11 @@ public class AdminScene {
 			newWindow.show();
 		});
 		
-		FontAwesomeIconView first  = new FontAwesomeIconView(FontAwesomeIcon.LINE_CHART,"27");
-		FontAwesomeIconView second  = new FontAwesomeIconView(FontAwesomeIcon.USER_SECRET,"27");
-		FontAwesomeIconView third  = new FontAwesomeIconView(FontAwesomeIcon.BAR_CHART,"27");
-		FontAwesomeIconView fourth  = new FontAwesomeIconView(FontAwesomeIcon.UNLOCK,"27");
-		FontAwesomeIconView fifth = new FontAwesomeIconView(FontAwesomeIcon.USER,"27");
+		FontAwesomeIconView first  = new FontAwesomeIconView(FontAwesomeIcon.LINE_CHART,"30");
+		FontAwesomeIconView second  = new FontAwesomeIconView(FontAwesomeIcon.USER_SECRET,"30");
+		FontAwesomeIconView third  = new FontAwesomeIconView(FontAwesomeIcon.BAR_CHART,"30");
+		FontAwesomeIconView fourth  = new FontAwesomeIconView(FontAwesomeIcon.UNLOCK,"30");
+		FontAwesomeIconView fifth = new FontAwesomeIconView(FontAwesomeIcon.USER,"30");
 		
 		HBox hb1 = new HBox(first,checkStock);
 		hb1.setSpacing(5);
@@ -217,6 +384,7 @@ public class AdminScene {
 		pane.setPrefSize(1540,800);		
 		return pane;
 	}
+	@SuppressWarnings("unchecked")
 	public  static ObservableList<Products> addProduct() throws FileNotFoundException, IOException, ClassNotFoundException {
 		String productsFile = "src/Database/products.dat";
 		ObjectInputStream readProd = new ObjectInputStream(new FileInputStream(productsFile));
@@ -229,6 +397,7 @@ public class AdminScene {
 		return prods;
 		
 	}
+	@SuppressWarnings("unchecked")
 	public static ObservableList<Employe> setContent() throws FileNotFoundException, IOException, ClassNotFoundException{
 		String employeName = "src/Database/employe.dat";
 		ObjectInputStream readProd = new ObjectInputStream(new FileInputStream(employeName));
@@ -249,6 +418,65 @@ public class AdminScene {
 				ostream.writeObject(row);
 		}
 		ostream.close();
+
+	}
+	@SuppressWarnings({ "unchecked", "resource" })
+	public static void aStock(String name,int quantity) throws IOException, ClassNotFoundException {
+		String productsFile = "src/Database/products.dat";
+		Products newProd = new Products(name,quantity);
+		ObjectInputStream readProd = new ObjectInputStream(new FileInputStream(productsFile));
+		ArrayList<Products> prod = (ArrayList<Products>) readProd.readObject();
+		prod.add(newProd);
+		ObjectOutputStream outstream = new ObjectOutputStream(new FileOutputStream(productsFile));
+		outstream.writeObject(prod);
+		outstream.close();
+	}
+	@SuppressWarnings({ "unchecked", "resource" })
+	public static void checkStockValid(String name,int quantity) throws FileNotFoundException, IOException, ClassNotFoundException {
+		String productsFile = "src/Database/products.dat";
+		ObjectInputStream readProd = new ObjectInputStream(new FileInputStream(productsFile));
+		ArrayList<Products> prod = (ArrayList<Products>) readProd.readObject();
+		int cnt=0;
+		int index=0;
+		for(int i=0;i<prod.size();i++) {
+			if(prod.get(i).getName().equals(name)) {
+				cnt++;
+				index=i;
+			}
+		}
+		if(cnt==0) {
+			aStock(name,quantity);
+		}
+		else {
+			prod.get(index).setQuantity(prod.get(index).getQuantity()+quantity);
+			ObjectOutputStream outstream = new ObjectOutputStream(new FileOutputStream(productsFile));
+			outstream.writeObject(prod);
+			outstream.close();
+		}
+	}
+	@SuppressWarnings({ "unchecked", "resource" })
+	public static void removeProduct(String name,int quantity) throws FileNotFoundException, IOException, ClassNotFoundException {
+		String productsFile = "src/Database/products.dat";
+		ObjectInputStream readProd = new ObjectInputStream(new FileInputStream(productsFile));
+		ArrayList<Products> prod = ((ArrayList<Products>) readProd.readObject());
+		int index=0;
+		for(int i=0;i<prod.size();i++) {
+			if(prod.get(i).getName().equals(name) ) {
+				index=i;
+			}
+		}
+		if(quantity==0) {
+			prod.remove(index);
+		}
+		else {
+			prod.get(index).setQuantity(prod.get(index).getQuantity()-quantity);
+			ObjectOutputStream outstream = new ObjectOutputStream(new FileOutputStream(productsFile));
+			outstream.writeObject(prod);
+			outstream.close();
+		}
+		ObjectOutputStream outstream = new ObjectOutputStream(new FileOutputStream(productsFile));
+		outstream.writeObject(prod);
+		outstream.close();
 
 	}
 	

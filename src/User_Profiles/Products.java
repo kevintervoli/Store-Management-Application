@@ -2,6 +2,7 @@ package User_Profiles;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class Products implements Serializable{
 	protected String name;
 	protected long quantity;

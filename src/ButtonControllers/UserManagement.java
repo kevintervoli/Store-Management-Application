@@ -45,6 +45,7 @@ public class UserManagement {
 		UserManagement.createWindow();
 	}
 
+	@SuppressWarnings("unchecked")
 	public static AnchorPane createWindow() {
 		Color fontColor= Color.web("#053C5E"); 
 		Color backGround = Color.web("#FFFFFF");

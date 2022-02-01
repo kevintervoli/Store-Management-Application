@@ -2,6 +2,7 @@ package User_Profiles;
 
 import java.io.Serializable;
 
+@SuppressWarnings("serial")
 public class Employe implements Serializable {
 	protected String name;
 	protected String surname;

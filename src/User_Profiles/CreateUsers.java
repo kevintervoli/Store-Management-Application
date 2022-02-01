@@ -1,14 +1,10 @@
 package User_Profiles;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 
 public class CreateUsers {
 	public static ArrayList<User> a = new ArrayList<>();

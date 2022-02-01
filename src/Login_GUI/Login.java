@@ -1,5 +1,4 @@
 package Login_GUI;
-import ButtonControllers.Hyperlink_Controller;
 import ButtonControllers.Login_Controller;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -25,7 +24,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.application.HostServices;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;

@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
-
 import Login_GUI.Login;
 import User_Profiles.Products;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -40,6 +39,7 @@ public class CashierScene {
 	public CashierScene(Stage pmstage) {
 		cashierStage=pmstage;
 	}
+	@SuppressWarnings("unchecked")
 	public static StackPane createCashScene() {
 		Color btnColor= Color.web("#053C5E"); 
 		Color color=Color.web("#FFFFFF");
@@ -154,6 +154,7 @@ public class CashierScene {
 		pane.setPrefSize(1540,800);
 		return pane;
 	}
+	@SuppressWarnings("unchecked")
 	public  static ObservableList<Products> addProduct() throws FileNotFoundException, IOException, ClassNotFoundException {
 		String productsFile = "src/Database/products.dat";
 		ObjectInputStream readProd = new ObjectInputStream(new FileInputStream(productsFile));

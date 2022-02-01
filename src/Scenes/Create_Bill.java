@@ -30,6 +30,7 @@ public class Create_Bill{
 	public Create_Bill() {
 		
 	}
+	@SuppressWarnings("unused")
 	public static BorderPane billWindow() {
 		BorderPane pane = new BorderPane();
 		Color fontColor= Color.web("#053C5E"); 

@@ -31,6 +31,7 @@ public class Login_Controller extends Login implements EventHandler<ActionEvent>
 		super(primaryStage);
 		stage=primaryStage;
 	}
+	@SuppressWarnings("unchecked")
 	@Override
 	public void handle(ActionEvent arg0){
 		String text="";
