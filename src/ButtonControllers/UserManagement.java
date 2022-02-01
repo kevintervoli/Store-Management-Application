@@ -129,28 +129,20 @@ public class UserManagement {
 		hb.getChildren().addAll(labels,tfield);
 		hb.setAlignment(Pos.CENTER);
 		hb.setSpacing(10);
-
+		pane.getStylesheets().add("css/style.css"); 
 		Button addUser = new Button("ADD USER");
 		
 		addUser.setFont(Font.font("OCR A Extended",15));
-		addUser.setTextFill(Color.WHITE);
-		addUser.setBackground(new Background(new BackgroundFill(fontColor, new CornerRadii(4), addUser.getInsets())));
-		pane.getStylesheets().add("css/style.css"); 
-		addUser.setId("logB2");
-		
+		addUser.setId("logB");
+	
 		Button clear = new Button ("CANCEL");
 		
 		clear.setFont(Font.font("OCR A Extended",15));
-		clear.setTextFill(Color.WHITE);
-		clear.setBackground(new Background(new BackgroundFill(fontColor, new CornerRadii(4), addUser.getInsets())));
 		pane.getStylesheets().add("css/style.css"); 
-		clear.setId("logB2");
+		clear.setId("logB");
 		
 		Button removeUser = new Button("REMOVE USER");
-		removeUser.setFont(Font.font("OCR A Extended",15));
-		removeUser.setTextFill(Color.WHITE);
-		removeUser.setBackground(new Background(new BackgroundFill(fontColor, new CornerRadii(4), addUser.getInsets()))); 
-		removeUser.setId("logB2");
+		removeUser.setId("logB");
 		HBox btns = new HBox(addUser,removeUser,clear);
 		btns.setAlignment(Pos.CENTER);
 		btns.setSpacing(15);

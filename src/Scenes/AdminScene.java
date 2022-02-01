@@ -2,16 +2,16 @@ package Scenes;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import ButtonControllers.UserManagement;
 import Login_GUI.Login;
-import User_Profiles.CreateUsers;
 import User_Profiles.Employe;
 import User_Profiles.Products;
-import User_Profiles.User;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
@@ -22,8 +22,10 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -47,7 +49,7 @@ public class AdminScene {
 		Background bckgStyle = new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY));
 		StackPane pane = new StackPane();
 		BorderPane bp = new BorderPane();
-		
+		pane.getStylesheets().add("css/style.css"); 
 		FileInputStream imgStream = null;
 		try {
 			imgStream = new FileInputStream("Images/c.png");
@@ -61,14 +63,15 @@ public class AdminScene {
 		Button logOut = new Button("Log Out");
 		Button employeList = new Button("Employe List");
 		
-		employeList.setFont(Font.font("OCR A Extended",15));
-		employeList.setTextFill(Color.WHITE);
-		employeList.setBackground(new Background(new BackgroundFill(btnColor, new CornerRadii(4), checkStock.getInsets())));
 		pane.getStylesheets().add("css/style.css"); 
 		
-		employeList.setId("logB2");
+		checkEmploye.setId("logB");
+		employeList.setId("logB");
+		checkStock.setId("logB");
+		logOut.setId("logB");
+		checkStatistics.setId("logB");
+		
 		employeList.setOnAction(e->{
-			Color col = Color.web("#C3C9E9");
 			TableView<Employe> empT = new TableView<Employe>();
 			empT.setBackground(bckgStyle);
 			empT.setEditable(true);
@@ -78,15 +81,29 @@ public class AdminScene {
 			TableColumn<Employe,String> name = new TableColumn<>("NAME");
 			name.setMinWidth(200);
 			name.setCellValueFactory(new PropertyValueFactory<>("Name"));
-	
+			name.setEditable(true);
+			name.setCellFactory(TextFieldTableCell.forTableColumn());
+			name.setResizable(true);
+			name.setMaxWidth(50);
+			name.setOnEditCommit((CellEditEvent<Employe, String> t)->{
+				try {
+					AdminScene.editTableContent(empT);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+			});
 			
 			TableColumn<Employe,String> surname = new TableColumn<>("SURNAME");
 			surname.setMinWidth(200);
 			surname.setCellValueFactory(new PropertyValueFactory<>("Surname"));
+			surname.setResizable(true);
 			
 			TableColumn<Employe,String> username = new TableColumn<>("USERNAME");
 			username.setMinWidth(200);
 			username.setCellValueFactory(new PropertyValueFactory<>("Username"));
+			username.setResizable(true);
 			empT.getColumns().addAll(name,surname,username);
 			try {
 				empT.setItems((ObservableList<Employe>)AdminScene.setContent());
@@ -96,19 +113,15 @@ public class AdminScene {
 			}
 			VBox stab = new VBox();
 			stab.getChildren().addAll(empT);
-			stab.setBackground(new Background(new BackgroundFill(col, CornerRadii.EMPTY, Insets.EMPTY)));
 			Stage nStage = new Stage();
 			Scene scene = new Scene(stab);
+			stab.setPrefSize(550, 400);
 			nStage.setScene(scene);
 			nStage.show();
-			
+	
 		});
-		
-		checkStock.setFont(Font.font("OCR A Extended",15));
-		checkStock.setTextFill(Color.WHITE);
-		checkStock.setBackground(new Background(new BackgroundFill(btnColor, new CornerRadii(4), checkStock.getInsets())));
 		checkStock.setOnAction(e->{
-			Color col = Color.web("#C3C9E9");
+			Color col = Color.web("#FFFFFF");
 			TableView<Products> table = new TableView<Products>();
 			table.setEditable(true);
 			table.getStylesheets().add("css/style.css");
@@ -141,10 +154,6 @@ public class AdminScene {
 			newStage.setScene(scene);
 			newStage.show();
 		});
-		
-		checkEmploye.setFont(Font.font("OCR A Extended",15));
-		checkEmploye.setTextFill(Color.WHITE);
-		checkEmploye.setBackground(new Background(new BackgroundFill(btnColor, new CornerRadii(4), checkStock.getInsets())));
 		checkEmploye.setOnAction(e->{
 			Stage newStage = new Stage();
 			UserManagement manage = new UserManagement();
@@ -153,20 +162,6 @@ public class AdminScene {
 			newStage.show();
 			
 		});
-		pane.getStylesheets().add("css/style.css"); 
-		
-		checkEmploye.setId("logB2");
-		checkStock.setId("logB2");
-		
-		checkStatistics.setFont(Font.font("OCR A Extended",15));
-		checkStatistics.setTextFill(Color.WHITE);
-		checkStatistics.setBackground(new Background(new BackgroundFill(btnColor, new CornerRadii(4), checkStock.getInsets())));
-		checkStatistics.setId("logB2");
-
-		
-		logOut.setFont(Font.font("OCR A Extended",15));
-		logOut.setTextFill(Color.WHITE);
-		logOut.setBackground(new Background(new BackgroundFill(btnColor, new CornerRadii(4), logOut.getInsets())));
 		logOut.setOnAction(e->{
 			((Stage)(((Node)e.getSource()).getScene().getWindow())).close();
 			Stage newWindow = new Stage();
@@ -175,7 +170,6 @@ public class AdminScene {
 			newWindow.setScene(scene);
 			newWindow.show();
 		});
-		logOut.setId("logB2");
 		
 		FontAwesomeIconView first  = new FontAwesomeIconView(FontAwesomeIcon.LINE_CHART,"27");
 		FontAwesomeIconView second  = new FontAwesomeIconView(FontAwesomeIcon.USER_SECRET,"27");
@@ -220,7 +214,7 @@ public class AdminScene {
 		bp.setTop(flwp);
 		bp.setCenter(centerCashier);
 		pane.getChildren().add(bp);
-		pane.setPrefSize(1540,800);
+		pane.setPrefSize(1540,800);		
 		return pane;
 	}
 	public  static ObservableList<Products> addProduct() throws FileNotFoundException, IOException, ClassNotFoundException {
@@ -247,6 +241,15 @@ public class AdminScene {
 
 		return prods;
 		
+	}
+	public static void editTableContent(TableView<Employe> empT) throws FileNotFoundException, IOException {
+		String employeName = "src/Database/employe.dat";
+		ObjectOutputStream ostream = new ObjectOutputStream(new FileOutputStream(employeName, true));
+		for (Employe row : empT.getItems()) {
+				ostream.writeObject(row);
+		}
+		ostream.close();
+
 	}
 	
 }

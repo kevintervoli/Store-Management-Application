@@ -121,10 +121,6 @@ public class Login {
 		
 		// Buttons 
 		loginB = new Button("Login");
-		loginB.setFont(Font.font("OCR A Extended",15));
-		loginB.setTextFill(Color.WHITE);
-		loginB.setBackground(new Background(new BackgroundFill(fontColor, new CornerRadii(4), loginB.getInsets())));
-	
 		loginB.setOnAction(handle);
 		
 		pane.getStylesheets().add("css/style.css"); 
