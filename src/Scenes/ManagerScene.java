@@ -82,14 +82,10 @@ public class ManagerScene {
 		checkStock.setBackground(new Background(new BackgroundFill(btnColor, new CornerRadii(4), checkStock.getInsets())));
 		checkStock.setId("logB");
 		checkStock.setOnAction(e->{
-			
-			checkStock.setDisable(true);
-			checkCashiers.setDisable(true);
-			checkStatistics.setDisable(true);
-			logOut.setDisable(true);
-			
 			Color col = Color.web("#FFFFFF");
 			TableView<Products> table = new TableView<Products>();
+			BorderPane tab = new BorderPane();
+			bp.setCenter(tab);
 			
 			table.setEditable(true);
 			table.getStylesheets().add("css/style.css");
@@ -126,7 +122,6 @@ public class ManagerScene {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			BorderPane tab = new BorderPane();
 			TextField t1 = new TextField();
 			TextField t2 = new TextField();
 			TextField t3 = new TextField();
@@ -175,8 +170,7 @@ public class ManagerScene {
 			tab.setBottom(botV);
 			tab.setPadding(new Insets(10,10,10,10));
 			tab.setPrefSize(570, 200);
-			Stage newStage = new Stage();
-			newStage.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
+		
 			addStock.setOnAction(new EventHandler<ActionEvent>(){
 				@Override
 				public void handle(ActionEvent arg0) {
@@ -191,12 +185,7 @@ public class ManagerScene {
 						Scene scene  = new Scene(alert);
 						st.setScene(scene);
 						st.show();
-						st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
-						checkStock.setDisable(false);
-						checkCashiers.setDisable(false);
-						checkStatistics.setDisable(false);
-						logOut.setDisable(false);
-						newStage.close();
+						st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));;
 					}
 					else if(t2.getText().matches("^[0-9]+")) {
 						Stage  st= new Stage();
@@ -209,13 +198,6 @@ public class ManagerScene {
 						Scene scene  = new Scene(alert);
 						st.setScene(scene);
 						st.show();
-						newStage.close();
-						checkStock.setDisable(false);
-						checkStock.setDisable(false);
-						checkCashiers.setDisable(false);
-						checkStatistics.setDisable(false);
-						logOut.setDisable(false);
-						newStage.close();
 					}
 					else {
 						try {
@@ -224,11 +206,6 @@ public class ManagerScene {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						checkStock.setDisable(false);
-						checkCashiers.setDisable(false);
-						checkStatistics.setDisable(false);
-						logOut.setDisable(false);
-						newStage.close();
 					}
 
 					}				
@@ -250,47 +227,19 @@ public class ManagerScene {
 							st.setScene(scene);
 							st.show();
 							st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
-							newStage.close();
-							checkStock.setDisable(false);
-							checkCashiers.setDisable(false);
-							checkStatistics.setDisable(false);
-							logOut.setDisable(false);
-							newStage.close();
 			}else {
 				removeProduct(t1.getText(),Integer.parseInt(t2.getText()),Double.parseDouble(t5.getText()));
-				checkStock.setDisable(false);
-				checkCashiers.setDisable(false);
-				checkStatistics.setDisable(false);
-				logOut.setDisable(false);
-				newStage.close();
 			}
 
 					} catch (ClassNotFoundException | IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					checkStock.setDisable(false);
-					checkCashiers.setDisable(false);
-					checkStatistics.setDisable(false);
-					logOut.setDisable(false);
-					newStage.close();
 
 				}
 				
 			});
-			newStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-		          public void handle(WindowEvent we) {
-		        	  checkStock.setDisable(false);
-						checkCashiers.setDisable(false);
-						checkStatistics.setDisable(false);
-						logOut.setDisable(false);
-						checkCashiers.setDisable(false);
-		          }
-			});
-			Scene scene = new Scene(tab);
-			newStage.setScene(scene);
-			newStage.show();
-		});
+	});
 		
 		checkCashiers.setFont(Font.font("OCR A Extended",15));
 		checkCashiers.setTextFill(Color.WHITE);
@@ -330,11 +279,7 @@ public class ManagerScene {
 			VBox stab = new VBox();
 			stab.getChildren().addAll(empT);
 			stab.setPrefSize(700, 400);
-			Stage nStage = new Stage();
-			Scene scene = new Scene(stab);
-			nStage.setScene(scene);
-			nStage.show();
-			nStage.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
+			bp.setCenter(stab);
 			
 		});
 		

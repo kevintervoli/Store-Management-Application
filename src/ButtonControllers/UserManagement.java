@@ -8,10 +8,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-
 import Scenes.AdminScene;
 import User_Profiles.Employe;
 import User_Profiles.User;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -66,7 +67,7 @@ public class UserManagement{
 		VBox labels = new VBox();
 		labels.getChildren().addAll(name,surname,username,password,status,salary);
 		labels.setAlignment(Pos.CENTER);
-		labels.setSpacing(10);
+		labels.setSpacing(40);
 		VBox forVSpace = new VBox();
 		VBox forVSpace2 = new VBox();
 		HBox allVbo = new HBox(forVSpace,forVSpace2,labels);
@@ -81,71 +82,66 @@ public class UserManagement{
 		TextField salaryf = new TextField();
 
 		
-		namef.setFont(Font.font("OCR A Extended",12));
+		namef.setFont(Font.font("OCR A Extended",18));
 		namef.setPromptText("Enter name!");
 		namef.setBorder(textFBorder);
 		namef.setBackground(bckgStyle);
-		namef.setPrefSize(200, 30);
+		namef.setPrefSize(350, 40);
 		
-		surnamef.setFont(Font.font("OCR A Extended",12));
+		surnamef.setFont(Font.font("OCR A Extended",18));
 		surnamef.setPromptText("Enter surname !");
 		surnamef.setBorder(textFBorder);
 		surnamef.setBackground(bckgStyle);
-		surnamef.setPrefSize(200, 30);
+		surnamef.setPrefSize(350, 40);
 		
-		usernamef.setFont(Font.font("OCR A Extended",12));
+		usernamef.setFont(Font.font("OCR A Extended",18));
 		usernamef.setPromptText("Enter Username !");
 		usernamef.setBorder(textFBorder);
 		usernamef.setBackground(bckgStyle);
-		usernamef.setPrefSize(200, 30);
+		usernamef.setPrefSize(350, 40);
 		
-		passwordf.setFont(Font.font("OCR A Extended",12));
+		passwordf.setFont(Font.font("OCR A Extended",18));
 		passwordf.setPromptText("Enter password !");
 		passwordf.setBorder(textFBorder);
 		passwordf.setBackground(bckgStyle);
-		passwordf.setPrefSize(200, 30);
+		passwordf.setPrefSize(350, 40);
 		
-		statusf.setFont(Font.font("OCR A Extended",12));
+		statusf.setFont(Font.font("OCR A Extended",18));
 		statusf.setPromptText("Enter user status !");
 		statusf.setBorder(textFBorder);
 		statusf.setBackground(bckgStyle);
-		statusf.setPrefSize(200, 30);
+		statusf.setPrefSize(350, 40);
 		
-		salaryf.setFont(Font.font("OCR A Extended",12));
+		salaryf.setFont(Font.font("OCR A Extended",18));
 		salaryf.setPromptText("Enter salary !");
 		salaryf.setBorder(textFBorder);
 		salaryf.setBackground(bckgStyle);
-		salaryf.setPrefSize(200, 30);
+		salaryf.setPrefSize(350, 40);
 		
 		
-		name.setFont(Font.font("OCR A Extended",17));
-		name.setPrefSize(150, 30);
+		name.setFont(Font.font("OCR A Extended",25));
+		name.setPrefSize(170, 40);
 		
-		surname.setFont(Font.font("OCR A Extended",17));
-		surname.setPrefSize(150, 30);
+		surname.setFont(Font.font("OCR A Extended",25));
+		surname.setPrefSize(170, 40);
 		
-		username.setFont(Font.font("OCR A Extended",17));
-		username.setPrefSize(150, 30);
+		username.setFont(Font.font("OCR A Extended",25));
+		username.setPrefSize(170, 40);
 		
-		password.setFont(Font.font("OCR A Extended",17));
-		password.setPrefSize(150, 30);
+		password.setFont(Font.font("OCR A Extended",25));
+		password.setPrefSize(170, 40);
 		
-		status.setFont(Font.font("OCR A Extended",17));
-		status.setPrefSize(150, 30);
+		status.setFont(Font.font("OCR A Extended",25));
+		status.setPrefSize(157, 40);
 		
-		salary.setFont(Font.font("OCR A Extended",17));
-		salary.setPrefSize(150, 30);
-
+		salary.setFont(Font.font("OCR A Extended",25));
+		salary.setPrefSize(170, 40);
 		VBox tfield = new VBox();
 		tfield.getChildren().addAll(namef,surnamef,usernamef,passwordf,statusf,salaryf);
 		tfield.setAlignment(Pos.CENTER);
-		tfield.setSpacing(10);
-		HBox hb = new HBox();
-		hb.getChildren().addAll(labels,tfield);
-		hb.setAlignment(Pos.CENTER);
-		hb.setSpacing(10);
-		pane.getStylesheets().add("css/style.css"); 
+		tfield.setSpacing(40);
 		Button addUser = new Button("ADD USER");
+		
 		
 		addUser.setFont(Font.font("OCR A Extended",15));
 		addUser.setId("logB");
@@ -329,16 +325,33 @@ public class UserManagement{
 			((Stage)(((Node)e.getSource()).getScene().getWindow())).close();
 		});
 		
-        
-		HBox forHSpace = new HBox();
-		HBox forBotSpace = new HBox();
-		VBox vbo = new VBox(forHSpace,btns,forBotSpace);
+		VBox vbo = new VBox(btns);
+		FontAwesomeIconView ico  = new FontAwesomeIconView(FontAwesomeIcon.USER,"100");
+		HBox hb = new HBox();
+		hb.getChildren().addAll(labels,tfield);
+		hb.setAlignment(Pos.CENTER);
+		pane.getStylesheets().add("css/style.css"); 
+		
+		VBox vboB = new VBox();
+		
+		HBox iconBox = new HBox();
+		
+		iconBox.getChildren().add(ico);
+		iconBox.setAlignment(Pos.CENTER);
+		vboB.getChildren().addAll(iconBox,hb,vbo);
+		vboB.setSpacing(15);
+		
+		HBox hboB = new HBox();
+		hboB.getChildren().add(vboB);
+		hboB.setAlignment(Pos.CENTER);
+		hboB.setSpacing(15);
+		hboB.setPrefSize(200, 200);
+		
 		vbo.setSpacing(10);
 		vbo.setAlignment(Pos.CENTER);
 		VBox.setVgrow(vbo, Priority.ALWAYS);
 		BorderPane bp = new BorderPane();
-		bp.setCenter(hb);
-		bp.setBottom(vbo);
+		bp.setCenter(hboB);
 		pane.getChildren().add(bp);
 		bp.setPrefSize(350, 200);
 		AnchorPane.setTopAnchor(bp, .0);

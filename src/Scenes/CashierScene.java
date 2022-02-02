@@ -12,19 +12,27 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -62,10 +70,12 @@ public class CashierScene {
 		checkStock.setFont(Font.font("OCR A Extended",15));
 		checkStock.setTextFill(Color.WHITE);
 		checkStock.setBackground(new Background(new BackgroundFill(btnColor, new CornerRadii(4), checkStock.getInsets())));
-		checkStock.setId("logB2");
+		checkStock.setId("logB");
 		checkStock.setOnAction(e->{
-			Color col = Color.web("#C3C9E9");
 			TableView<Products> table = new TableView<Products>();
+			BorderPane tab = new BorderPane();
+			bp.setCenter(tab);
+			
 			table.setEditable(true);
 			table.getStylesheets().add("css/style.css");
 			table.setId(".table-view");
@@ -74,11 +84,23 @@ public class CashierScene {
 			name.setMinWidth(200);
 			name.setCellValueFactory(new PropertyValueFactory<>("Name"));
 			
+			TableColumn<Products,String> singer = new TableColumn<>("SINGER");
+			singer.setMinWidth(200);
+			singer.setCellValueFactory(new PropertyValueFactory<>("Singer"));
+			
+			TableColumn<Products,String> genre = new TableColumn<>("GENRE");
+			genre.setMinWidth(200);
+			genre.setCellValueFactory(new PropertyValueFactory<>("Genre"));
+			
 			TableColumn<Products,Long> quantity = new TableColumn<>("QUANTITY");
 			quantity.setMinWidth(85);
 			quantity.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
+			TableColumn<Products,String> price = new TableColumn<>("Price");
+			price.setMinWidth(200);
+			price.setCellValueFactory(new PropertyValueFactory<>("Price"));
+			
 			try {
-				table.getColumns().addAll(name,quantity);
+				table.getColumns().addAll(name,singer,genre,quantity,price);
 			} catch (Exception e2) {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
@@ -89,25 +111,24 @@ public class CashierScene {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			VBox tab = new VBox();
-			tab.getChildren().add(table);
-			tab.setBackground(new Background(new BackgroundFill(col, CornerRadii.EMPTY, Insets.EMPTY)));
-			Stage newStage = new Stage();
-			Scene scene = new Scene(tab);
-			newStage.setScene(scene);
-			newStage.show();
-			newStage.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
-		});
+			tab.getStylesheets().add("css/style.css");
+			tab.setCenter(table);
+
+			tab.setPadding(new Insets(10,10,10,10));
+			tab.setPrefSize(570, 200);
+		
+				
+			});
 		
 		createBill.setFont(Font.font("OCR A Extended",15));
 		createBill.setTextFill(Color.WHITE);
 		createBill.setBackground(new Background(new BackgroundFill(btnColor, new CornerRadii(4), checkStock.getInsets())));
-		createBill.setId("logB2");
+		createBill.setId("logB");
 		
 		logOut.setFont(Font.font("OCR A Extended",15));
 		logOut.setTextFill(Color.WHITE);
 		logOut.setBackground(new Background(new BackgroundFill(btnColor, new CornerRadii(4), checkStock.getInsets())));
-		logOut.setId("logB2");
+		logOut.setId("logB");
 		logOut.setOnAction(e->{
 			((Stage)(((Node)e.getSource()).getScene().getWindow())).close();
 			Stage newWindow = new Stage();

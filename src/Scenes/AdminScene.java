@@ -48,16 +48,16 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-
 public class AdminScene {
 	 public static Button checkStock;
 	 public static Button checkEmploye;
 	 public static Button checkStatistics ;
 	public static Button logOut;
 	public static Button employeList ;
+	static BorderPane tab = new BorderPane();
+
 	@SuppressWarnings({ "unchecked", "unused", "hiding" })
-	public static <Products> StackPane createAdminScene() { 
+	public static StackPane createAdminScene() { 
 		Color btnColor= Color.web("#053C5E"); 
 		Color color=Color.web("#FFFFFF");
 		Color tfCol = Color.web("#F9F9FB");
@@ -88,11 +88,6 @@ public class AdminScene {
 		logOut.setId("logB");
 		checkStatistics.setId("logB");
 		employeList.setOnAction(e->{
-  			checkStock.setDisable(true);
-			checkEmploye.setDisable(true);
-			checkStatistics.setDisable(true);
-			logOut.setDisable(true);
-			employeList.setDisable(true);
 			TableView<Employe> empT = new TableView<Employe>();
 			empT.setBackground(bckgStyle);
 			empT.setEditable(true);
@@ -104,6 +99,7 @@ public class AdminScene {
 			name.setCellValueFactory(new PropertyValueFactory<>("Name"));
 			name.setEditable(true);
 			name.setCellFactory(TextFieldTableCell.forTableColumn());
+			name.setEditable(true);
 			name.setOnEditCommit((CellEditEvent<Employe, String> t)->{
 				try {
 					AdminScene.editTableContent(empT);
@@ -115,16 +111,49 @@ public class AdminScene {
 				
 			});
 			TableColumn<Employe,String> surname = new TableColumn<>("SURNAME");
-			surname.setMinWidth(200);
+			surname.setPrefWidth(200);
+			surname.setEditable(true);
 			surname.setCellValueFactory(new PropertyValueFactory<>("Surname"));
+			surname.setOnEditCommit((CellEditEvent<Employe, String> t)->{
+				try {
+					AdminScene.editTableContent(empT);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+			});
 			
 			TableColumn<Employe,String> username = new TableColumn<>("USERNAME");
-			username.setMinWidth(200);
+			username.setPrefWidth(200);
+			username.setEditable(true);
 			username.setCellValueFactory(new PropertyValueFactory<>("Username"));
+			username.setOnEditCommit((CellEditEvent<Employe, String> t)->{
+				try {
+					AdminScene.editTableContent(empT);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+			});
 			
 			TableColumn<Employe,String> salary = new TableColumn<>("SALARY");
-			salary.setMinWidth(200);
+			salary.setPrefWidth(200);
+			salary.setEditable(true);
 			salary.setCellValueFactory(new PropertyValueFactory<>("salary"));
+			salary.setOnEditCommit((CellEditEvent<Employe, String> t)->{
+				try {
+					AdminScene.editTableContent(empT);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+			});
 			
 			empT.getColumns().addAll(name,surname,username,salary);
 			try {
@@ -134,57 +163,74 @@ public class AdminScene {
 				e1.printStackTrace();
 			}
 			VBox stab = new VBox();
+			bp.setCenter(stab);
 			stab.getChildren().addAll(empT);
-			Stage nStage = new Stage();
-			Scene scene = new Scene(stab);
-			stab.setPrefSize(720, 400);
-			nStage.setScene(scene);
-			nStage.show();
-			nStage.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
-			nStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-		          public void handle(WindowEvent we) {
-		  			checkStock.setDisable(false);
-					checkEmploye.setDisable(false);
-					checkStatistics.setDisable(false);
-					logOut.setDisable(false);
-					employeList.setDisable(false);
-		          }
-			});
-	
 		});
 		checkStock.setOnAction(e->{
-			checkStock.setDisable(true);
-			checkEmploye.setDisable(true);
-			checkStatistics.setDisable(true);
-			logOut.setDisable(true);
-			employeList.setDisable(true);
+			bp.setCenter(tab);
 			Color col = Color.web("#FFFFFF");
 			TableView<Products> table = new TableView<Products>();
 			table.setEditable(true);
 			table.getStylesheets().add("css/style.css");
 			table.setId(".table-view");
 			TableColumn<Products,String> name = new TableColumn<Products,String>("NAME");
-			name.setMinWidth(175);
+			name.setPrefWidth(200);
+			name.setEditable(true);
 			name.setCellValueFactory(new PropertyValueFactory<Products,String>("Name"));
-			name.setResizable(false);
+			name.setResizable(true);
+			name.setOnEditCommit((CellEditEvent<Products, String> t)->{
+				try {
+					AdminScene.addProduct();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}	
+			});
+			
 			TableColumn<Products,String> singer = new TableColumn<Products,String>("SINGER");
-			singer.setMinWidth(175);;
+			singer.setPrefWidth(200);
+			singer.setEditable(true);
 			singer.setCellValueFactory(new PropertyValueFactory<Products,String>("Singer"));
-			singer.setResizable(false);
+			singer.setResizable(true);
+			singer.setOnEditCommit((CellEditEvent<Products, String> t)->{
+				try {
+					AdminScene.addProduct();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}	
+			});
 			TableColumn<Products,String> genre = new TableColumn<Products,String>("GENRE");
-			genre.setMinWidth(175);
+			genre.setPrefWidth(200);
+			genre.setEditable(true);
 			genre.setCellValueFactory(new PropertyValueFactory<Products,String>("Genre"));
-			name.setResizable(false);
+			genre.setResizable(true);
+			genre.setOnEditCommit((CellEditEvent<Products, String> t)->{
+				try {
+					AdminScene.addProduct();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}	
+			});
 			TableColumn<Products,Long> quantity = new TableColumn<Products,Long>("QUANTITY");
-			quantity.setMinWidth(175);
+			quantity.setEditable(true);
+			quantity.setPrefWidth(200);
 			quantity.setCellValueFactory(new PropertyValueFactory<Products,Long>("Quantity"));
-			quantity.setResizable(false);
+			quantity.setResizable(true);
 			TableColumn<Products,Double> price = new TableColumn<Products,Double>("PRICE");
-			price.setMinWidth(175);
+			price.setEditable(true);
+			price.setPrefWidth(200);
 			price.setCellValueFactory(new PropertyValueFactory<>("Price"));
-			price.setResizable(false);
-			
-			
 			try {
 				table.getColumns().addAll(name,singer,genre,quantity,price);
 			} catch (Exception e2) {
@@ -198,7 +244,6 @@ public class AdminScene {
 				e1.printStackTrace();
 			}
 		
-			BorderPane tab = new BorderPane();
 			TextField t1 = new TextField();  
 			TextField t2 = new TextField();
 			TextField t3 = new TextField();
@@ -267,18 +312,11 @@ public class AdminScene {
 						alertS.setFont(Font.font("OCR A Extended",17));
 						alertS.setTextFill(Color.RED);
 						StackPane alert = new StackPane();
-						alert.setPrefSize(250, 75);
+						alert.setPrefSize(250, 200);
 						alert.getChildren().add(alertS);
 						Scene scene  = new Scene(alert);
 						st.setScene(scene);
 						st.show();
-						newStage.close();
-						checkStock.setDisable(false);
-						checkEmploye.setDisable(false);
-						checkStatistics.setDisable(false);
-						logOut.setDisable(false);
-						employeList.setDisable(false);
-						newStage.close();
 						
 					}
 					else {
@@ -288,12 +326,6 @@ public class AdminScene {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						checkStock.setDisable(false);
-						checkEmploye.setDisable(false);
-						checkStatistics.setDisable(false);
-						logOut.setDisable(false);
-						employeList.setDisable(false);
-						newStage.close();
 					}
 
 					}				
@@ -309,77 +341,26 @@ public class AdminScene {
 							alertS.setFont(Font.font("OCR A Extended",17));
 							alertS.setTextFill(Color.RED);
 							StackPane alert = new StackPane();
-							alert.setPrefSize(250, 75);
+							alert.setPrefSize(250, 200);
 							alert.getChildren().add(alertS);
 							Scene scene  = new Scene(alert);
 							st.setScene(scene);
 							st.show();
-							newStage.close();
-							checkStock.setDisable(false);
-							checkEmploye.setDisable(false);
-							checkStatistics.setDisable(false);
-							logOut.setDisable(false);
-							employeList.setDisable(false);
-							newStage.close();
 			}else {
 				removeProduct(t1.getText(),Integer.parseInt(t2.getText()),Double.parseDouble(t5.getText()));
-				checkStock.setDisable(false);
-				checkEmploye.setDisable(false);
-				checkStatistics.setDisable(false);
-				logOut.setDisable(false);
-				employeList.setDisable(false);
-				newStage.close();
 			}
 
 					} catch (ClassNotFoundException | IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-					checkStock.setDisable(false);
-					checkEmploye.setDisable(false);
-					checkStatistics.setDisable(false);
-					logOut.setDisable(false);
-					employeList.setDisable(false);
-					newStage.close();
 
 				}
 				
 			});
-			newStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-		          public void handle(WindowEvent we) {
-		  			checkStock.setDisable(false);
-					checkEmploye.setDisable(false);
-					checkStatistics.setDisable(false);
-					logOut.setDisable(false);
-					employeList.setDisable(false);
-		          }
-			});
-			Scene scene = new Scene(tab);
-			newStage.setScene(scene);
-			newStage.show();
 		});
 		checkEmploye.setOnAction(e->{
-			Stage newStage = new Stage();
-			UserManagement manage = new UserManagement();
-			Scene scene = new Scene(UserManagement.createWindow());
-			newStage.setScene(scene);
-			newStage.show();
-			newStage.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
-			checkStock.setDisable(true);
-			checkEmploye.setDisable(true);
-			checkStatistics.setDisable(true);
-			logOut.setDisable(true);
-			employeList.setDisable(true);
-			newStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-		          public void handle(WindowEvent we) {
-		  			checkStock.setDisable(false);
-					checkEmploye.setDisable(false);
-					checkStatistics.setDisable(false);
-					logOut.setDisable(false);
-					employeList.setDisable(false);
-		          }
-			});
-			
+			bp.setCenter(UserManagement.createWindow());
 		});
 		logOut.setOnAction(e->{
 			((Stage)(((Node)e.getSource()).getScene().getWindow())).close();
