@@ -1,5 +1,6 @@
 package Scenes;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -41,6 +42,7 @@ public class CashierScene {
 	}
 	@SuppressWarnings("unchecked")
 	public static StackPane createCashScene() {
+		cashierStage.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 		Color btnColor= Color.web("#053C5E"); 
 		Color color=Color.web("#FFFFFF");
 		Background bckgStyle = new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY));
@@ -94,6 +96,7 @@ public class CashierScene {
 			Scene scene = new Scene(tab);
 			newStage.setScene(scene);
 			newStage.show();
+			newStage.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 		});
 		
 		createBill.setFont(Font.font("OCR A Extended",15));
@@ -112,6 +115,7 @@ public class CashierScene {
 			Scene scene = new Scene(Login.login());
 			newWindow.setScene(scene);
 			newWindow.show();
+			newWindow.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 		});
 		
 		FontAwesomeIconView first  = new FontAwesomeIconView(FontAwesomeIcon.LINE_CHART,"27");

@@ -1,5 +1,6 @@
 package Scenes;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -138,6 +139,7 @@ public class AdminScene {
 			stab.setPrefSize(550, 400);
 			nStage.setScene(scene);
 			nStage.show();
+			nStage.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 			nStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 		          public void handle(WindowEvent we) {
 		  			checkStock.setDisable(false);
@@ -208,6 +210,7 @@ public class AdminScene {
 			tab.setPadding(new Insets(10,10,10,10));
 			tab.setPrefSize(570, 200);
 			Stage newStage = new Stage();
+			newStage.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 			addStock.setOnAction(new EventHandler<ActionEvent>(){
 				@Override
 				public void handle(ActionEvent arg0) {
@@ -313,6 +316,7 @@ public class AdminScene {
 			Scene scene = new Scene(UserManagement.createWindow());
 			newStage.setScene(scene);
 			newStage.show();
+			newStage.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 			checkStock.setDisable(true);
 			checkEmploye.setDisable(true);
 			checkStatistics.setDisable(true);
@@ -336,6 +340,7 @@ public class AdminScene {
 			Scene scene = new Scene(Login.login());
 			newWindow.setScene(scene);
 			newWindow.show();
+			newWindow.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 		});
 		
 		FontAwesomeIconView first  = new FontAwesomeIconView(FontAwesomeIcon.LINE_CHART,"30");
@@ -381,7 +386,7 @@ public class AdminScene {
 		bp.setTop(flwp);
 		bp.setCenter(centerCashier);
 		pane.getChildren().add(bp);
-		pane.setPrefSize(1540,800);		
+		pane.setPrefSize(1540,800);
 		return pane;
 	}
 	@SuppressWarnings("unchecked")

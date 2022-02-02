@@ -1,5 +1,6 @@
 package ButtonControllers;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -84,6 +86,7 @@ public class Login_Controller extends Login implements EventHandler<ActionEvent>
 							newWindow.setTitle("Cashier");
 							stage.hide();
 							newWindow.show();
+							newWindow.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 						}
 						else if(readUser.get(j).getUserStatus()==1) {
 							text="Login Successfully !";
@@ -93,6 +96,7 @@ public class Login_Controller extends Login implements EventHandler<ActionEvent>
 							newWindow.setTitle("Manager");
 							stage.hide();
 							newWindow.show();
+							newWindow.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 						}
 						else if(readUser.get(j).getUserStatus()==2) {
 							text="Login Successfully !";
@@ -102,6 +106,7 @@ public class Login_Controller extends Login implements EventHandler<ActionEvent>
 							newWindow.setTitle("Admin");
 							stage.hide();
 							newWindow.show();
+							newWindow.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 						}
 					}
 					else {

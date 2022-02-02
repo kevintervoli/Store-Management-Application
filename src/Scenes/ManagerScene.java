@@ -1,5 +1,6 @@
 package Scenes;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -140,6 +141,7 @@ public class ManagerScene {
 			tab.setPadding(new Insets(10,10,10,10));
 			tab.setPrefSize(570, 200);
 			Stage newStage = new Stage();
+			newStage.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 			addStock.setOnAction(new EventHandler<ActionEvent>(){
 				@Override
 				public void handle(ActionEvent arg0) {
@@ -154,7 +156,7 @@ public class ManagerScene {
 						Scene scene  = new Scene(alert);
 						st.setScene(scene);
 						st.show();
-						newStage.close();
+						st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 						checkStock.setDisable(false);
 						checkCashiers.setDisable(false);
 						checkStatistics.setDisable(false);
@@ -193,6 +195,7 @@ public class ManagerScene {
 							Scene scene  = new Scene(alert);
 							st.setScene(scene);
 							st.show();
+							st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 							newStage.close();
 							checkStock.setDisable(false);
 							checkCashiers.setDisable(false);
@@ -271,6 +274,7 @@ public class ManagerScene {
 			Scene scene = new Scene(stab);
 			nStage.setScene(scene);
 			nStage.show();
+			nStage.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 			
 		});
 		
@@ -291,6 +295,7 @@ public class ManagerScene {
 			Scene scene = new Scene(Login.login());
 			newWindow.setScene(scene);
 			newWindow.show();
+			newWindow.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 		});
 		
 		FontAwesomeIconView first  = new FontAwesomeIconView(FontAwesomeIcon.LINE_CHART,"27");

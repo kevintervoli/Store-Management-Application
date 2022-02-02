@@ -1,5 +1,6 @@
 package ButtonControllers;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -18,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -183,6 +185,7 @@ public class UserManagement {
 				Scene scene  = new Scene(alert);
 				st.setScene(scene);
 				st.show();
+				st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 			}
 			else {
 				try {
@@ -233,6 +236,7 @@ public class UserManagement {
 				Scene scene  = new Scene(alert);
 				st.setScene(scene);
 				st.show();
+				st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 				((Stage)(((Node)e.getSource()).getScene().getWindow())).close();
 			}
 			int cnt=0;
@@ -252,6 +256,7 @@ public class UserManagement {
 				Scene scene  = new Scene(alert);
 				st.setScene(scene);
 				st.show();
+				st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 				((Stage)(((Node)e.getSource()).getScene().getWindow())).close();
 			}
 			else {
