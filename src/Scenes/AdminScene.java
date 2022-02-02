@@ -8,6 +8,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+
+import javax.swing.SpringLayout.Constraints;
+
 import ButtonControllers.UserManagement;
 import Login_GUI.Login;
 import User_Profiles.Employe;
@@ -60,7 +63,7 @@ public class AdminScene {
 	public static StackPane createAdminScene() { 
 		Color btnColor= Color.web("#053C5E"); 
 		Color color=Color.web("#FFFFFF");
-		Color tfCol = Color.web("#F9F9FB");
+		Color tfCol = Color.web("#EEEEEE");
 		Border textFBorder = new Border(new BorderStroke(btnColor, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(0, 0, 2, 0)));
 		Background bckgStyle = new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY));
 		Background tfBack = new Background(new BackgroundFill(tfCol, CornerRadii.EMPTY, Insets.EMPTY));
@@ -88,8 +91,9 @@ public class AdminScene {
 		logOut.setId("logB");
 		checkStatistics.setId("logB");
 		employeList.setOnAction(e->{
+			Color col = Color.web("#C3C9E9");
 			TableView<Employe> empT = new TableView<Employe>();
-			empT.setBackground(bckgStyle);
+			empT.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 			empT.setEditable(true);
 			empT.getStylesheets().add("css/style.css");
 			empT.setId(".table-view");
@@ -97,65 +101,22 @@ public class AdminScene {
 			TableColumn<Employe,String> name = new TableColumn<>("NAME");
 			name.setMinWidth(200);
 			name.setCellValueFactory(new PropertyValueFactory<>("Name"));
-			name.setEditable(true);
-			name.setCellFactory(TextFieldTableCell.forTableColumn());
-			name.setEditable(true);
-			name.setOnEditCommit((CellEditEvent<Employe, String> t)->{
-				try {
-					AdminScene.editTableContent(empT);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-				
-			});
+	
+			
 			TableColumn<Employe,String> surname = new TableColumn<>("SURNAME");
-			surname.setPrefWidth(200);
-			surname.setEditable(true);
+			surname.setMinWidth(200);
 			surname.setCellValueFactory(new PropertyValueFactory<>("Surname"));
-			surname.setOnEditCommit((CellEditEvent<Employe, String> t)->{
-				try {
-					AdminScene.editTableContent(empT);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-				
-			});
 			
 			TableColumn<Employe,String> username = new TableColumn<>("USERNAME");
-			username.setPrefWidth(200);
-			username.setEditable(true);
+			username.setMinWidth(200);
 			username.setCellValueFactory(new PropertyValueFactory<>("Username"));
-			username.setOnEditCommit((CellEditEvent<Employe, String> t)->{
-				try {
-					AdminScene.editTableContent(empT);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-				
-			});
 			
 			TableColumn<Employe,String> salary = new TableColumn<>("SALARY");
-			salary.setPrefWidth(200);
-			salary.setEditable(true);
+			salary.setMinWidth(200);
 			salary.setCellValueFactory(new PropertyValueFactory<>("salary"));
-			salary.setOnEditCommit((CellEditEvent<Employe, String> t)->{
-				try {
-					AdminScene.editTableContent(empT);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				
-				
-			});
 			
 			empT.getColumns().addAll(name,surname,username,salary);
+			empT.setPrefHeight(500);
 			try {
 				empT.setItems((ObservableList<Employe>)AdminScene.setContent());
 			} catch (ClassNotFoundException | IOException e1) {
@@ -163,21 +124,23 @@ public class AdminScene {
 				e1.printStackTrace();
 			}
 			VBox stab = new VBox();
-			bp.setCenter(stab);
 			stab.getChildren().addAll(empT);
+			stab.setPrefHeight(500);
+			bp.setCenter(stab);
 		});
 		checkStock.setOnAction(e->{
 			bp.setCenter(tab);
 			Color col = Color.web("#FFFFFF");
 			TableView<Products> table = new TableView<Products>();
+			table.setPrefHeight(500);
+			table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 			table.setEditable(true);
 			table.getStylesheets().add("css/style.css");
 			table.setId(".table-view");
 			TableColumn<Products,String> name = new TableColumn<Products,String>("NAME");
-			name.setPrefWidth(200);
+			name.setMinWidth(200);
 			name.setEditable(true);
 			name.setCellValueFactory(new PropertyValueFactory<Products,String>("Name"));
-			name.setResizable(true);
 			name.setOnEditCommit((CellEditEvent<Products, String> t)->{
 				try {
 					AdminScene.addProduct();
@@ -191,7 +154,7 @@ public class AdminScene {
 			});
 			
 			TableColumn<Products,String> singer = new TableColumn<Products,String>("SINGER");
-			singer.setPrefWidth(200);
+			singer.setMinWidth(200);
 			singer.setEditable(true);
 			singer.setCellValueFactory(new PropertyValueFactory<Products,String>("Singer"));
 			singer.setResizable(true);
@@ -207,7 +170,7 @@ public class AdminScene {
 				}	
 			});
 			TableColumn<Products,String> genre = new TableColumn<Products,String>("GENRE");
-			genre.setPrefWidth(200);
+			genre.setMinWidth(200);
 			genre.setEditable(true);
 			genre.setCellValueFactory(new PropertyValueFactory<Products,String>("Genre"));
 			genre.setResizable(true);
@@ -224,12 +187,12 @@ public class AdminScene {
 			});
 			TableColumn<Products,Long> quantity = new TableColumn<Products,Long>("QUANTITY");
 			quantity.setEditable(true);
-			quantity.setPrefWidth(200);
+			quantity.setMinWidth(200);
 			quantity.setCellValueFactory(new PropertyValueFactory<Products,Long>("Quantity"));
 			quantity.setResizable(true);
 			TableColumn<Products,Double> price = new TableColumn<Products,Double>("PRICE");
 			price.setEditable(true);
-			price.setPrefWidth(200);
+			price.setMinWidth(200);
 			price.setCellValueFactory(new PropertyValueFactory<>("Price"));
 			try {
 				table.getColumns().addAll(name,singer,genre,quantity,price);
@@ -251,12 +214,11 @@ public class AdminScene {
 			TextField t5 = new TextField();
 
 			
-			
 			tab.getStylesheets().add("css/style.css");
 			t1.setFont(Font.font("OCR A Extended",12));
 			t1.setBorder(textFBorder);
 			t1.setBackground(tfBack);
-			t1.setPrefSize(200, 30);
+
 			t1.setPromptText("Enter the album name :");
 			t1.setAlignment(Pos.CENTER);
 			
@@ -264,28 +226,28 @@ public class AdminScene {
 			t2.setFont(Font.font("OCR A Extended",12));
 			t2.setBorder(textFBorder);
 			t2.setBackground(tfBack);
-			t2.setPrefSize(200, 30);
+
 			t2.setAlignment(Pos.CENTER);
 			
 			t3.setPromptText("Enter the genre :");
 			t3.setFont(Font.font("OCR A Extended",12));
 			t3.setBorder(textFBorder);
 			t3.setBackground(tfBack);
-			t3.setPrefSize(200, 30);
+			
 			t3.setAlignment(Pos.CENTER);
 			
 			t4.setPromptText("Enter the singer :");
 			t4.setFont(Font.font("OCR A Extended",12));
 			t4.setBorder(textFBorder);
 			t4.setBackground(tfBack);
-			t4.setPrefSize(200, 30);
+
 			t4.setAlignment(Pos.CENTER);
 			
 			t5.setPromptText("Enter the price :");
 			t5.setFont(Font.font("OCR A Extended",12));
 			t5.setBorder(textFBorder);
 			t5.setBackground(tfBack);
-			t5.setPrefSize(200, 30);
+
 			t5.setAlignment(Pos.CENTER);
 			
 			
@@ -299,8 +261,8 @@ public class AdminScene {
 			botV.setAlignment(Pos.CENTER);
 			tab.setCenter(table);
 			tab.setBottom(botV);
-
-			tab.setPrefSize(1500, 200);
+			tab.setPadding(new Insets(10,10,10,10));
+			tab.setPrefHeight(500);
 			Stage newStage = new Stage();
 			newStage.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 			addStock.setOnAction(new EventHandler<ActionEvent>(){
@@ -321,7 +283,9 @@ public class AdminScene {
 					}
 					else {
 						try {
+							table.getItems().clear();
 							checkStockValid(t1.getText(),t4.getText(),t3.getText(),Integer.parseInt(t2.getText()),Double.parseDouble(t5.getText()));
+							table.setItems((ObservableList<Products>) addProduct());
 						} catch (NumberFormatException | ClassNotFoundException | IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -347,7 +311,9 @@ public class AdminScene {
 							st.setScene(scene);
 							st.show();
 			}else {
+				table.getItems().clear();
 				removeProduct(t1.getText(),Integer.parseInt(t2.getText()),Double.parseDouble(t5.getText()));
+				table.setItems((ObservableList<Products>) addProduct());
 			}
 
 					} catch (ClassNotFoundException | IOException e) {
@@ -464,6 +430,7 @@ public class AdminScene {
 		ObjectOutputStream outstream = new ObjectOutputStream(new FileOutputStream(productsFile));
 		outstream.writeObject(prod);
 		outstream.close();
+		setContent();
 	}
 	@SuppressWarnings({ "unchecked", "resource" })
 	public static void checkStockValid(String name,String singer,String genre,int quantity,double price) throws FileNotFoundException, IOException, ClassNotFoundException {
@@ -514,6 +481,7 @@ public class AdminScene {
 		ObjectOutputStream outstream = new ObjectOutputStream(new FileOutputStream(productsFile));
 		outstream.writeObject(prod);
 		outstream.close();
+		setContent();
 
 	}
 	

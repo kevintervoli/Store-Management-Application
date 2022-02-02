@@ -194,21 +194,12 @@ public class UserManagement{
 				st.setScene(scene);
 				st.show();
 				st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
-				AdminScene.checkStock.setDisable(false);
-				AdminScene.checkEmploye.setDisable(false);
-				AdminScene.checkStatistics.setDisable(false);
-				AdminScene.logOut.setDisable(false);
-				AdminScene.employeList.setDisable(false);
+
 			}
 			else {
 				try {
 					UserManagement.removeUser(usernamef.getText());
 					UserManagement.removeEmploye(usernamef.getText());
-					AdminScene.checkStock.setDisable(false);
-					AdminScene.checkEmploye.setDisable(false);
-					AdminScene.checkStatistics.setDisable(false);
-					AdminScene.logOut.setDisable(false);
-					AdminScene.employeList.setDisable(false);
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -254,31 +245,6 @@ public class UserManagement{
 				st.setScene(scene);
 				st.show();
 				st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
-				((Stage)(((Node)e.getSource()).getScene().getWindow())).close();
-				AdminScene.checkStock.setDisable(false);
-				AdminScene.checkEmploye.setDisable(false);
-				AdminScene.checkStatistics.setDisable(false);
-				AdminScene.logOut.setDisable(false);
-				AdminScene.employeList.setDisable(false);
-			}
-			if(statusf.getText() !="0"|| statusf.getText() != "1" || statusf.getText() != "2" ) {
-				Stage  st= new Stage();
-				Label alertS =new Label("CHECK STATUS FIELD !");
-				alertS.setFont(Font.font("OCR A Extended",17));
-				alertS.setTextFill(Color.RED);
-				StackPane alert = new StackPane();
-				alert.setPrefSize(250, 75);
-				alert.getChildren().add(alertS);
-				Scene scene  = new Scene(alert);
-				st.setScene(scene);
-				st.show();
-				st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
-				((Stage)(((Node)e.getSource()).getScene().getWindow())).close();
-				AdminScene.checkStock.setDisable(false);
-				AdminScene.checkEmploye.setDisable(false);
-				AdminScene.checkStatistics.setDisable(false);
-				AdminScene.logOut.setDisable(false);
-				AdminScene.employeList.setDisable(false);
 			}
 			int cnt=0;
 			for(int i=0;i<use.size();i++) {
@@ -296,29 +262,17 @@ public class UserManagement{
 				alert.getChildren().add(alertS);
 				Scene scene  = new Scene(alert);
 				st.setScene(scene);
-				AdminScene.checkStock.setDisable(false);
-				AdminScene.checkEmploye.setDisable(false);
-				AdminScene.checkStatistics.setDisable(false);
-				AdminScene.logOut.setDisable(false);
-				AdminScene.employeList.setDisable(false);
 				st.show();
 				st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
-				((Stage)(((Node)e.getSource()).getScene().getWindow())).close();
 			}
 			else {
 				try {
 					UserManagement.addUser(namef.getText(),surnamef.getText(),usernamef.getText(),passwordf.getText(),Integer.parseInt(statusf.getText()),Double.parseDouble(salaryf.getText()));
 					UserManagement.addEmploye(namef.getText(), surnamef.getText(), usernamef.getText(),Integer.parseInt(salaryf.getText()));
-					AdminScene.checkStock.setDisable(false);
-					AdminScene.checkEmploye.setDisable(false);
-					AdminScene.checkStatistics.setDisable(false);
-					AdminScene.logOut.setDisable(false);
-					AdminScene.employeList.setDisable(false);
 				} catch (NumberFormatException | ClassNotFoundException | IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				((Stage)(((Node)e.getSource()).getScene().getWindow())).close();
 			}
 		});
 		clear.setOnAction(e->{

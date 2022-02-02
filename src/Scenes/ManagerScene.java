@@ -84,6 +84,7 @@ public class ManagerScene {
 		checkStock.setOnAction(e->{
 			Color col = Color.web("#FFFFFF");
 			TableView<Products> table = new TableView<Products>();
+			table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 			BorderPane tab = new BorderPane();
 			bp.setCenter(tab);
 			
@@ -169,7 +170,7 @@ public class ManagerScene {
 			tab.setCenter(table);
 			tab.setBottom(botV);
 			tab.setPadding(new Insets(10,10,10,10));
-			tab.setPrefSize(570, 200);
+			tab.setPrefSize(570, 500);
 		
 			addStock.setOnAction(new EventHandler<ActionEvent>(){
 				@Override
@@ -248,6 +249,7 @@ public class ManagerScene {
 		checkCashiers.setOnAction(e->{
 			Color col = Color.web("#C3C9E9");
 			TableView<Employe> empT = new TableView<Employe>();
+			empT.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 			empT.setEditable(true);
 			empT.getStylesheets().add("css/style.css");
 			empT.setId(".table-view");
@@ -278,7 +280,7 @@ public class ManagerScene {
 			}
 			VBox stab = new VBox();
 			stab.getChildren().addAll(empT);
-			stab.setPrefSize(700, 400);
+			stab.setPrefSize(700, 500);
 			bp.setCenter(stab);
 			
 		});

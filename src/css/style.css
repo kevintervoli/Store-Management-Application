@@ -28,25 +28,29 @@
 }
 .table-view .column-header .label{
 	-fx-font-weight: bold; 
-	-fx-alignment: center-left;
+	-fx-font-family : "OCR A Extended";
+	-fx-font-size : 15;
+	-fx-alignment: center;
 }
 /* This is just magic */
 .table-row-cell:filled {
 	-fx-background-color: transparent;
 	-fx-border-color: transparent #F9F9FB #F9F9FB #F9F9FB, transparent;
 	-fx-border-insets: 0, 1;
+	-fx-font-family : "OCR A Extended";
+	-fx-font-size : 12;
 }
 .table-row-cell:empty {
 	-fx-background-color: transparent;
 }
 .table-row-cell:filled:hover {
-	-fx-background-color: #F9F9FB;
+	-fx-background-color:#b2c2cf;
 }
 .table-row-cell:filled:selected:hover {
-	-fx-background-color: #F9F9FB;
+	-fx-background-color:#b2c2cf;
 }
 .table-row-cell:filled:selected {
-  	-fx-background-color: #eaeaea;
+  	-fx-background-color:#b2c2cf;
  	-fx-background-insets: 0.0;
 	-fx-background-radius: 0.0;
 }
@@ -61,7 +65,7 @@
 	-fx-background-color: white;
 }
 .check-box-table-cell > .check-box:selected .box{
-	-fx-background-color: #B6FF00;
+	-fx-background-color:#b2c2cf;
 }
 .table-view .placeholder .label {
 	-fx-text-fill: red;

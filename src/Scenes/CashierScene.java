@@ -73,13 +73,14 @@ public class CashierScene {
 		checkStock.setId("logB");
 		checkStock.setOnAction(e->{
 			TableView<Products> table = new TableView<Products>();
+			table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 			BorderPane tab = new BorderPane();
 			bp.setCenter(tab);
 			
 			table.setEditable(true);
 			table.getStylesheets().add("css/style.css");
 			table.setId(".table-view");
-			table.setPrefSize(290,200);
+			table.setPrefHeight(500);
 			TableColumn<Products,String> name = new TableColumn<>("NAME");
 			name.setMinWidth(200);
 			name.setCellValueFactory(new PropertyValueFactory<>("Name"));
@@ -115,7 +116,7 @@ public class CashierScene {
 			tab.setCenter(table);
 
 			tab.setPadding(new Insets(10,10,10,10));
-			tab.setPrefSize(570, 200);
+			tab.setPrefHeight(500);
 		
 				
 			});
@@ -124,6 +125,9 @@ public class CashierScene {
 		createBill.setTextFill(Color.WHITE);
 		createBill.setBackground(new Background(new BackgroundFill(btnColor, new CornerRadii(4), checkStock.getInsets())));
 		createBill.setId("logB");
+		createBill.setOnAction(e->{
+			bp.setCenter(Create_Bill.billWindow());
+		});
 		
 		logOut.setFont(Font.font("OCR A Extended",15));
 		logOut.setTextFill(Color.WHITE);

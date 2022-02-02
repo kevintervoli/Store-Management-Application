@@ -11,6 +11,7 @@ import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -37,6 +38,7 @@ public class Create_Bill{
 		Color backGround = Color.web("#FFFFFF");
 		Border textFBorder = new Border(new BorderStroke(fontColor, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, new BorderWidths(0, 0, 2, 0)));
 		Text header = new Text("Welcome to the create bill window !");
+		
 		HBox headB = new HBox(header);
 		pane.getStylesheets().add("css/style.css");
 		headB.setAlignment(Pos.CENTER);
@@ -45,13 +47,14 @@ public class Create_Bill{
 		albumName = new Label("Album Name :");
 		quantity = new Label("Quantity : ");
 		shipping = new Label("Shipping adress : ");
+		
 		albumName.setFont(Font.font("OCR A Extended",17));
 		quantity.setFont(Font.font("OCR A Extended",17));
 		shipping.setFont(Font.font("OCR A Extended",17));
 		
 		VBox first = new VBox();
 		first.getChildren().addAll(albumName,quantity,shipping);
-		
+		first.setAlignment(Pos.CENTER_LEFT);
 		nam = new TextField();
 		nam.setPromptText("Enter album name ");
 		nam.setBorder(textFBorder);
@@ -63,19 +66,24 @@ public class Create_Bill{
 		
 		VBox second = new VBox();
 		second.getChildren().addAll(nam,quan,shippingfield);
+		second.setAlignment(Pos.CENTER);
 		
+		HBox fields = new HBox();
+		fields.getChildren().addAll(first,second);
 		createButton = new Button("Create Bill");
 		createButton.setId("logB");
 		cancel = new Button("Cancel");
 		cancel.setId("logB");
-		StackPane btnB = new StackPane(createButton,cancel);
-//		btnB.setSpacing(10);
-		btnB.setAlignment(Pos.CENTER_LEFT);
+		fields.setAlignment(Pos.CENTER);
 		
-		HBox centerB = new HBox(first,second);
-		VBox allB = new VBox(centerB,btnB);
-	    pane.setTop(headB); 
-		pane.setCenter(allB);
+		HBox buton = new HBox();
+		buton.getChildren().addAll(createButton,cancel);
+		buton.setAlignment(Pos.CENTER);
+		buton.setSpacing(15);
+		VBox combine = new VBox();
+		combine.getChildren().addAll(headB,fields,buton);
+		combine.setSpacing(15);
+		pane.setCenter(combine);
 		pane.setPrefSize(250, 150);
 		return pane;
 	}
