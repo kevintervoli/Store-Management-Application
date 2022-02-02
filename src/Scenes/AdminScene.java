@@ -51,11 +51,11 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class AdminScene {
-	protected static Button checkStock;
-	protected static Button checkEmploye;
-	protected static Button checkStatistics ;
-	protected static Button logOut;
-	protected static Button employeList ;
+	 public static Button checkStock;
+	 public static Button checkEmploye;
+	 public static Button checkStatistics ;
+	public static Button logOut;
+	public static Button employeList ;
 	@SuppressWarnings({ "unchecked", "unused", "hiding" })
 	public static <Products> StackPane createAdminScene() { 
 		Color btnColor= Color.web("#053C5E"); 
@@ -74,11 +74,11 @@ public class AdminScene {
 			System.out.println(e.getMessage());
 		}
 
-		Button checkStock = new Button("Check Stock");
-		Button checkEmploye = new Button("Manage Users");
-		Button checkStatistics = new Button("Check Statistics");
-		Button logOut = new Button("Log Out");
-		Button employeList = new Button("Employe List");
+		 checkStock = new Button("Check Stock");
+		 checkEmploye = new Button("Manage Users");
+		 checkStatistics = new Button("Check Statistics");
+		 logOut = new Button("Log Out");
+		 employeList = new Button("Employe List");
 		
 		pane.getStylesheets().add("css/style.css"); 
 		
@@ -104,8 +104,6 @@ public class AdminScene {
 			name.setCellValueFactory(new PropertyValueFactory<>("Name"));
 			name.setEditable(true);
 			name.setCellFactory(TextFieldTableCell.forTableColumn());
-			name.setResizable(true);
-			name.setMaxWidth(50);
 			name.setOnEditCommit((CellEditEvent<Employe, String> t)->{
 				try {
 					AdminScene.editTableContent(empT);
@@ -119,13 +117,16 @@ public class AdminScene {
 			TableColumn<Employe,String> surname = new TableColumn<>("SURNAME");
 			surname.setMinWidth(200);
 			surname.setCellValueFactory(new PropertyValueFactory<>("Surname"));
-			surname.setResizable(true);
 			
 			TableColumn<Employe,String> username = new TableColumn<>("USERNAME");
 			username.setMinWidth(200);
 			username.setCellValueFactory(new PropertyValueFactory<>("Username"));
-			username.setResizable(true);
-			empT.getColumns().addAll(name,surname,username);
+			
+			TableColumn<Employe,String> salary = new TableColumn<>("SALARY");
+			salary.setMinWidth(200);
+			salary.setCellValueFactory(new PropertyValueFactory<>("salary"));
+			
+			empT.getColumns().addAll(name,surname,username,salary);
 			try {
 				empT.setItems((ObservableList<Employe>)AdminScene.setContent());
 			} catch (ClassNotFoundException | IOException e1) {
@@ -136,7 +137,7 @@ public class AdminScene {
 			stab.getChildren().addAll(empT);
 			Stage nStage = new Stage();
 			Scene scene = new Scene(stab);
-			stab.setPrefSize(550, 400);
+			stab.setPrefSize(720, 400);
 			nStage.setScene(scene);
 			nStage.show();
 			nStage.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
@@ -162,59 +163,105 @@ public class AdminScene {
 			table.setEditable(true);
 			table.getStylesheets().add("css/style.css");
 			table.setId(".table-view");
-			table.setPrefSize(290,200);
-			TableColumn<Products,String> name = new TableColumn<>("NAME");
-			name.setMinWidth(200);
-			name.setCellValueFactory(new PropertyValueFactory<>("Name"));
+			TableColumn<Products,String> name = new TableColumn<Products,String>("NAME");
+			name.setMinWidth(175);
+			name.setCellValueFactory(new PropertyValueFactory<Products,String>("Name"));
+			name.setResizable(false);
+			TableColumn<Products,String> singer = new TableColumn<Products,String>("SINGER");
+			singer.setMinWidth(175);;
+			singer.setCellValueFactory(new PropertyValueFactory<Products,String>("Singer"));
+			singer.setResizable(false);
+			TableColumn<Products,String> genre = new TableColumn<Products,String>("GENRE");
+			genre.setMinWidth(175);
+			genre.setCellValueFactory(new PropertyValueFactory<Products,String>("Genre"));
+			name.setResizable(false);
+			TableColumn<Products,Long> quantity = new TableColumn<Products,Long>("QUANTITY");
+			quantity.setMinWidth(175);
+			quantity.setCellValueFactory(new PropertyValueFactory<Products,Long>("Quantity"));
+			quantity.setResizable(false);
+			TableColumn<Products,Double> price = new TableColumn<Products,Double>("PRICE");
+			price.setMinWidth(175);
+			price.setCellValueFactory(new PropertyValueFactory<>("Price"));
+			price.setResizable(false);
 			
-			TableColumn<Products,Long> quantity = new TableColumn<>("QUANTITY");
-			quantity.setMinWidth(85);
-			quantity.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
+			
 			try {
-				table.getColumns().addAll(name,quantity);
+				table.getColumns().addAll(name,singer,genre,quantity,price);
 			} catch (Exception e2) {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
 			}
 			try {
-				table.setItems((ObservableList<Products>) AdminScene.addProduct());
+				table.setItems((ObservableList<Products>) addProduct());
 			} catch (ClassNotFoundException | IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		
 			BorderPane tab = new BorderPane();
-			TextField t1 = new TextField();
+			TextField t1 = new TextField();  
 			TextField t2 = new TextField();
+			TextField t3 = new TextField();
+			TextField t4 = new TextField();
+			TextField t5 = new TextField();
+
+			
+			
 			tab.getStylesheets().add("css/style.css");
 			t1.setFont(Font.font("OCR A Extended",12));
 			t1.setBorder(textFBorder);
 			t1.setBackground(tfBack);
 			t1.setPrefSize(200, 30);
 			t1.setPromptText("Enter the album name :");
+			t1.setAlignment(Pos.CENTER);
+			
 			t2.setPromptText("Enter the quantity :");
 			t2.setFont(Font.font("OCR A Extended",12));
 			t2.setBorder(textFBorder);
 			t2.setBackground(tfBack);
 			t2.setPrefSize(200, 30);
+			t2.setAlignment(Pos.CENTER);
+			
+			t3.setPromptText("Enter the genre :");
+			t3.setFont(Font.font("OCR A Extended",12));
+			t3.setBorder(textFBorder);
+			t3.setBackground(tfBack);
+			t3.setPrefSize(200, 30);
+			t3.setAlignment(Pos.CENTER);
+			
+			t4.setPromptText("Enter the singer :");
+			t4.setFont(Font.font("OCR A Extended",12));
+			t4.setBorder(textFBorder);
+			t4.setBackground(tfBack);
+			t4.setPrefSize(200, 30);
+			t4.setAlignment(Pos.CENTER);
+			
+			t5.setPromptText("Enter the price :");
+			t5.setFont(Font.font("OCR A Extended",12));
+			t5.setBorder(textFBorder);
+			t5.setBackground(tfBack);
+			t5.setPrefSize(200, 30);
+			t5.setAlignment(Pos.CENTER);
+			
+			
 			Button addStock = new Button("ADD");
 			Button removeStock = new Button("REMOVE");
 			addStock.setId("logB");
 			removeStock.setId("logB");
 			HBox botV = new HBox();
-			botV.getChildren().addAll(t1,t2,addStock,removeStock);
+			botV.getChildren().addAll(t1,t2,t3,t4,t5,addStock,removeStock);
 			botV.setSpacing(8);
 			botV.setAlignment(Pos.CENTER);
 			tab.setCenter(table);
 			tab.setBottom(botV);
-			tab.setPadding(new Insets(10,10,10,10));
-			tab.setPrefSize(570, 200);
+
+			tab.setPrefSize(1500, 200);
 			Stage newStage = new Stage();
 			newStage.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 			addStock.setOnAction(new EventHandler<ActionEvent>(){
 				@Override
 				public void handle(ActionEvent arg0) {
-					if(t1.getText().matches("")) {
+					if(t1.getText().matches("")|| t2.getText().matches("") || t3.getText().matches("")||t4.getText().matches("")) {
 						Stage  st= new Stage();
 						Label alertS =new Label("Can not add ore remove an empty field !");
 						alertS.setFont(Font.font("OCR A Extended",17));
@@ -232,10 +279,11 @@ public class AdminScene {
 						logOut.setDisable(false);
 						employeList.setDisable(false);
 						newStage.close();
+						
 					}
 					else {
 						try {
-							checkStockValid(t1.getText(),Integer.parseInt(t2.getText()));
+							checkStockValid(t1.getText(),t4.getText(),t3.getText(),Integer.parseInt(t2.getText()),Double.parseDouble(t5.getText()));
 						} catch (NumberFormatException | ClassNotFoundException | IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -274,7 +322,7 @@ public class AdminScene {
 							employeList.setDisable(false);
 							newStage.close();
 			}else {
-				removeProduct(t1.getText(),Integer.parseInt(t2.getText()));
+				removeProduct(t1.getText(),Integer.parseInt(t2.getText()),Double.parseDouble(t5.getText()));
 				checkStock.setDisable(false);
 				checkEmploye.setDisable(false);
 				checkStatistics.setDisable(false);
@@ -426,9 +474,9 @@ public class AdminScene {
 
 	}
 	@SuppressWarnings({ "unchecked", "resource" })
-	public static void aStock(String name,int quantity) throws IOException, ClassNotFoundException {
+	public static void aStock(String name,String singer,String genre,int quantity,double price) throws IOException, ClassNotFoundException {
 		String productsFile = "src/Database/products.dat";
-		Products newProd = new Products(name,quantity);
+		Products newProd = new Products(name,singer,genre,quantity, price);
 		ObjectInputStream readProd = new ObjectInputStream(new FileInputStream(productsFile));
 		ArrayList<Products> prod = (ArrayList<Products>) readProd.readObject();
 		prod.add(newProd);
@@ -437,7 +485,7 @@ public class AdminScene {
 		outstream.close();
 	}
 	@SuppressWarnings({ "unchecked", "resource" })
-	public static void checkStockValid(String name,int quantity) throws FileNotFoundException, IOException, ClassNotFoundException {
+	public static void checkStockValid(String name,String singer,String genre,int quantity,double price) throws FileNotFoundException, IOException, ClassNotFoundException {
 		String productsFile = "src/Database/products.dat";
 		ObjectInputStream readProd = new ObjectInputStream(new FileInputStream(productsFile));
 		ArrayList<Products> prod = (ArrayList<Products>) readProd.readObject();
@@ -450,7 +498,7 @@ public class AdminScene {
 			}
 		}
 		if(cnt==0) {
-			aStock(name,quantity);
+			aStock(name,singer,genre,quantity,price);
 		}
 		else {
 			prod.get(index).setQuantity(prod.get(index).getQuantity()+quantity);
@@ -460,7 +508,7 @@ public class AdminScene {
 		}
 	}
 	@SuppressWarnings({ "unchecked", "resource" })
-	public static void removeProduct(String name,int quantity) throws FileNotFoundException, IOException, ClassNotFoundException {
+	public static void removeProduct(String name,int quantity,double price) throws FileNotFoundException, IOException, ClassNotFoundException {
 		String productsFile = "src/Database/products.dat";
 		ObjectInputStream readProd = new ObjectInputStream(new FileInputStream(productsFile));
 		ArrayList<Products> prod = ((ArrayList<Products>) readProd.readObject());
@@ -471,6 +519,9 @@ public class AdminScene {
 			}
 		}
 		if(quantity==0) {
+			prod.remove(index);
+		}
+		else if(prod.get(index).equals(name) || prod.get(index).getQuantity()==quantity) {
 			prod.remove(index);
 		}
 		else {

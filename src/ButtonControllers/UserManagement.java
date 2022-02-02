@@ -9,6 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import Scenes.AdminScene;
 import User_Profiles.Employe;
 import User_Profiles.User;
 import javafx.geometry.Insets;
@@ -37,7 +38,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class UserManagement {
+public class UserManagement{
 	Label name ;
 	Label surname;
 	Label username;
@@ -61,8 +62,9 @@ public class UserManagement {
 		Label username = new Label("USERNAME : ");
 		Label password = new Label("PASSWORD : ");
 		Label status = new Label("STATUS : ");
+		Label salary = new Label("SALARY : ");
 		VBox labels = new VBox();
-		labels.getChildren().addAll(name,surname,username,password,status);
+		labels.getChildren().addAll(name,surname,username,password,status,salary);
 		labels.setAlignment(Pos.CENTER);
 		labels.setSpacing(10);
 		VBox forVSpace = new VBox();
@@ -76,16 +78,17 @@ public class UserManagement {
 		TextField usernamef = new TextField();
 		PasswordField passwordf = new PasswordField();
 		TextField statusf = new TextField();
+		TextField salaryf = new TextField();
 
 		
 		namef.setFont(Font.font("OCR A Extended",12));
-		namef.setPromptText("Enter Username !");
+		namef.setPromptText("Enter name!");
 		namef.setBorder(textFBorder);
 		namef.setBackground(bckgStyle);
 		namef.setPrefSize(200, 30);
 		
 		surnamef.setFont(Font.font("OCR A Extended",12));
-		surnamef.setPromptText("Enter Username !");
+		surnamef.setPromptText("Enter surname !");
 		surnamef.setBorder(textFBorder);
 		surnamef.setBackground(bckgStyle);
 		surnamef.setPrefSize(200, 30);
@@ -97,16 +100,22 @@ public class UserManagement {
 		usernamef.setPrefSize(200, 30);
 		
 		passwordf.setFont(Font.font("OCR A Extended",12));
-		passwordf.setPromptText("Enter Username !");
+		passwordf.setPromptText("Enter password !");
 		passwordf.setBorder(textFBorder);
 		passwordf.setBackground(bckgStyle);
 		passwordf.setPrefSize(200, 30);
 		
 		statusf.setFont(Font.font("OCR A Extended",12));
-		statusf.setPromptText("Enter Username !");
+		statusf.setPromptText("Enter user status !");
 		statusf.setBorder(textFBorder);
 		statusf.setBackground(bckgStyle);
 		statusf.setPrefSize(200, 30);
+		
+		salaryf.setFont(Font.font("OCR A Extended",12));
+		salaryf.setPromptText("Enter salary !");
+		salaryf.setBorder(textFBorder);
+		salaryf.setBackground(bckgStyle);
+		salaryf.setPrefSize(200, 30);
 		
 		
 		name.setFont(Font.font("OCR A Extended",17));
@@ -123,9 +132,12 @@ public class UserManagement {
 		
 		status.setFont(Font.font("OCR A Extended",17));
 		status.setPrefSize(150, 30);
+		
+		salary.setFont(Font.font("OCR A Extended",17));
+		salary.setPrefSize(150, 30);
 
 		VBox tfield = new VBox();
-		tfield.getChildren().addAll(namef,surnamef,usernamef,passwordf,statusf);
+		tfield.getChildren().addAll(namef,surnamef,usernamef,passwordf,statusf,salaryf);
 		tfield.setAlignment(Pos.CENTER);
 		tfield.setSpacing(10);
 		HBox hb = new HBox();
@@ -186,11 +198,21 @@ public class UserManagement {
 				st.setScene(scene);
 				st.show();
 				st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
+				AdminScene.checkStock.setDisable(false);
+				AdminScene.checkEmploye.setDisable(false);
+				AdminScene.checkStatistics.setDisable(false);
+				AdminScene.logOut.setDisable(false);
+				AdminScene.employeList.setDisable(false);
 			}
 			else {
 				try {
 					UserManagement.removeUser(usernamef.getText());
 					UserManagement.removeEmploye(usernamef.getText());
+					AdminScene.checkStock.setDisable(false);
+					AdminScene.checkEmploye.setDisable(false);
+					AdminScene.checkStatistics.setDisable(false);
+					AdminScene.logOut.setDisable(false);
+					AdminScene.employeList.setDisable(false);
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -201,7 +223,6 @@ public class UserManagement {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				System.out.println("User removed");
 				((Stage)(((Node)e.getSource()).getScene().getWindow())).close();
 			}
 			
@@ -225,7 +246,7 @@ public class UserManagement {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			if(namef.getText().isEmpty() || surnamef.getText().isEmpty()|| usernamef.getText().isEmpty() || passwordf.getText().isEmpty() || statusf.getText().isEmpty()) {
+			if(namef.getText().isEmpty() || surnamef.getText().isEmpty()|| usernamef.getText().isEmpty() || passwordf.getText().isEmpty() || statusf.getText().isEmpty() || salaryf.getText().isEmpty()) {
 				Stage  st= new Stage();
 				Label alertS =new Label("CHECK EMPTY FIELDS !");
 				alertS.setFont(Font.font("OCR A Extended",17));
@@ -238,6 +259,30 @@ public class UserManagement {
 				st.show();
 				st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 				((Stage)(((Node)e.getSource()).getScene().getWindow())).close();
+				AdminScene.checkStock.setDisable(false);
+				AdminScene.checkEmploye.setDisable(false);
+				AdminScene.checkStatistics.setDisable(false);
+				AdminScene.logOut.setDisable(false);
+				AdminScene.employeList.setDisable(false);
+			}
+			if(statusf.getText() !="0"|| statusf.getText() != "1" || statusf.getText() != "2" ) {
+				Stage  st= new Stage();
+				Label alertS =new Label("CHECK STATUS FIELD !");
+				alertS.setFont(Font.font("OCR A Extended",17));
+				alertS.setTextFill(Color.RED);
+				StackPane alert = new StackPane();
+				alert.setPrefSize(250, 75);
+				alert.getChildren().add(alertS);
+				Scene scene  = new Scene(alert);
+				st.setScene(scene);
+				st.show();
+				st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
+				((Stage)(((Node)e.getSource()).getScene().getWindow())).close();
+				AdminScene.checkStock.setDisable(false);
+				AdminScene.checkEmploye.setDisable(false);
+				AdminScene.checkStatistics.setDisable(false);
+				AdminScene.logOut.setDisable(false);
+				AdminScene.employeList.setDisable(false);
 			}
 			int cnt=0;
 			for(int i=0;i<use.size();i++) {
@@ -255,14 +300,24 @@ public class UserManagement {
 				alert.getChildren().add(alertS);
 				Scene scene  = new Scene(alert);
 				st.setScene(scene);
+				AdminScene.checkStock.setDisable(false);
+				AdminScene.checkEmploye.setDisable(false);
+				AdminScene.checkStatistics.setDisable(false);
+				AdminScene.logOut.setDisable(false);
+				AdminScene.employeList.setDisable(false);
 				st.show();
 				st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 				((Stage)(((Node)e.getSource()).getScene().getWindow())).close();
 			}
 			else {
 				try {
-					UserManagement.addUser(namef.getText(),surnamef.getText(),usernamef.getText(),passwordf.getText(),Integer.parseInt(statusf.getText()));
-					UserManagement.addEmploye(namef.getText(), surnamef.getText(), usernamef.getText());
+					UserManagement.addUser(namef.getText(),surnamef.getText(),usernamef.getText(),passwordf.getText(),Integer.parseInt(statusf.getText()),Double.parseDouble(salaryf.getText()));
+					UserManagement.addEmploye(namef.getText(), surnamef.getText(), usernamef.getText(),Integer.parseInt(salaryf.getText()));
+					AdminScene.checkStock.setDisable(false);
+					AdminScene.checkEmploye.setDisable(false);
+					AdminScene.checkStatistics.setDisable(false);
+					AdminScene.logOut.setDisable(false);
+					AdminScene.employeList.setDisable(false);
 				} catch (NumberFormatException | ClassNotFoundException | IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -299,9 +354,9 @@ public class UserManagement {
 	}
 	
 	@SuppressWarnings({ "unchecked", "resource" })
-	public static void addUser(String name,String surname,String username,String password,int status) throws IOException, ClassNotFoundException {
+	public static void addUser(String name,String surname,String username,String password,int status,double salary) throws IOException, ClassNotFoundException {
 		String fileName = "src/Database/firstUsers.dat";
-		User newUser  = new User(name,surname,username,password,status);
+		User newUser  = new User(name,surname,username,password,status,salary);
 		ObjectInputStream inp = new ObjectInputStream(new FileInputStream(fileName));
 		ArrayList<User> users = (ArrayList<User>) inp.readObject();
 		users.add(newUser);
@@ -310,10 +365,10 @@ public class UserManagement {
 		outstream.close();
 	}
 	@SuppressWarnings({ "unchecked", "resource" })
-	public static void addEmploye(String name,String surname,String username) throws FileNotFoundException, IOException, ClassNotFoundException {
+	public static void addEmploye(String name,String surname,String username,double salary) throws FileNotFoundException, IOException, ClassNotFoundException {
 		String employeName = "src/Database/employe.dat";
 		ObjectInputStream secondinp = new ObjectInputStream(new FileInputStream(employeName));
-		Employe newEmploye = new Employe(name,surname,username);
+		Employe newEmploye = new Employe(name,surname,username,salary);
 		ArrayList<Employe> employe= (ArrayList<Employe>) secondinp.readObject();
 		employe.add(newEmploye);
 		ObjectOutputStream soutstream = new ObjectOutputStream(new FileOutputStream(employeName));

@@ -99,11 +99,23 @@ public class ManagerScene {
 			name.setMinWidth(200);
 			name.setCellValueFactory(new PropertyValueFactory<>("Name"));
 			
+			TableColumn<Products,String> singer = new TableColumn<>("SINGER");
+			singer.setMinWidth(200);
+			singer.setCellValueFactory(new PropertyValueFactory<>("Singer"));
+			
+			TableColumn<Products,String> genre = new TableColumn<>("GENRE");
+			genre.setMinWidth(200);
+			genre.setCellValueFactory(new PropertyValueFactory<>("Genre"));
+			
 			TableColumn<Products,Long> quantity = new TableColumn<>("QUANTITY");
 			quantity.setMinWidth(85);
 			quantity.setCellValueFactory(new PropertyValueFactory<>("Quantity"));
+			TableColumn<Products,String> price = new TableColumn<>("Price");
+			price.setMinWidth(200);
+			price.setCellValueFactory(new PropertyValueFactory<>("Price"));
+			
 			try {
-				table.getColumns().addAll(name,quantity);
+				table.getColumns().addAll(name,singer,genre,quantity,price);
 			} catch (Exception e2) {
 				// TODO Auto-generated catch block
 				e2.printStackTrace();
@@ -117,23 +129,46 @@ public class ManagerScene {
 			BorderPane tab = new BorderPane();
 			TextField t1 = new TextField();
 			TextField t2 = new TextField();
+			TextField t3 = new TextField();
+			TextField t4 = new TextField();
+			TextField t5 = new TextField();
+			
 			tab.getStylesheets().add("css/style.css");
 			t1.setFont(Font.font("OCR A Extended",12));
 			t1.setBorder(textFBorder);
 			t1.setBackground(tfBack);
 			t1.setPrefSize(200, 30);
 			t1.setPromptText("Enter the album name :");
+			
 			t2.setPromptText("Enter the quantity :");
 			t2.setFont(Font.font("OCR A Extended",12));
 			t2.setBorder(textFBorder);
 			t2.setBackground(tfBack);
 			t2.setPrefSize(200, 30);
+			
+			t3.setPromptText("Enter the genre :");
+			t3.setFont(Font.font("OCR A Extended",12));
+			t3.setBorder(textFBorder);
+			t3.setBackground(tfBack);
+			t3.setPrefSize(200, 30);
+			
+			t4.setPromptText("Enter the singer :");
+			t4.setFont(Font.font("OCR A Extended",12));
+			t4.setBorder(textFBorder);
+			t4.setBackground(tfBack);
+			t4.setPrefSize(200, 30);
+			
+			t5.setPromptText("Enter the singer :");
+			t5.setFont(Font.font("OCR A Extended",12));
+			t5.setBorder(textFBorder);
+			t5.setBackground(tfBack);
+			t5.setPrefSize(200, 30);
 			Button addStock = new Button("ADD");
 			Button removeStock = new Button("REMOVE");
 			addStock.setId("logB");
 			removeStock.setId("logB");
 			HBox botV = new HBox();
-			botV.getChildren().addAll(t1,t2,addStock,removeStock);
+			botV.getChildren().addAll(t1,t2,t3,t4,t5,addStock,removeStock);
 			botV.setSpacing(8);
 			botV.setAlignment(Pos.CENTER);
 			tab.setCenter(table);
@@ -163,9 +198,28 @@ public class ManagerScene {
 						logOut.setDisable(false);
 						newStage.close();
 					}
+					else if(t2.getText().matches("^[0-9]+")) {
+						Stage  st= new Stage();
+						Label alertS =new Label("Enter an Integer for quantity !");
+						alertS.setFont(Font.font("OCR A Extended",17));
+						alertS.setTextFill(Color.RED);
+						StackPane alert = new StackPane();
+						alert.setPrefSize(250, 75);
+						alert.getChildren().add(alertS);
+						Scene scene  = new Scene(alert);
+						st.setScene(scene);
+						st.show();
+						newStage.close();
+						checkStock.setDisable(false);
+						checkStock.setDisable(false);
+						checkCashiers.setDisable(false);
+						checkStatistics.setDisable(false);
+						logOut.setDisable(false);
+						newStage.close();
+					}
 					else {
 						try {
-							checkStockValid(t1.getText(),Integer.parseInt(t2.getText()));
+							checkStockValid(t1.getText(),t4.getText(),t3.getText(),Integer.parseInt(t2.getText()),Double.parseDouble(t5.getText()));
 						} catch (NumberFormatException | ClassNotFoundException | IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -203,7 +257,7 @@ public class ManagerScene {
 							logOut.setDisable(false);
 							newStage.close();
 			}else {
-				removeProduct(t1.getText(),Integer.parseInt(t2.getText()));
+				removeProduct(t1.getText(),Integer.parseInt(t2.getText()),Double.parseDouble(t5.getText()));
 				checkStock.setDisable(false);
 				checkCashiers.setDisable(false);
 				checkStatistics.setDisable(false);
@@ -261,7 +315,12 @@ public class ManagerScene {
 			TableColumn<Employe,String> username = new TableColumn<>("USERNAME");
 			username.setMinWidth(200);
 			username.setCellValueFactory(new PropertyValueFactory<>("Username"));
-			empT.getColumns().addAll(name,surname,username);
+			
+			TableColumn<Employe,String> salary = new TableColumn<>("SALARY");
+			salary.setMinWidth(200);
+			salary.setCellValueFactory(new PropertyValueFactory<>("salary"));
+			
+			empT.getColumns().addAll(name,surname,username,salary);
 			try {
 				empT.setItems((ObservableList<Employe>)ManagerScene.setTableContent());
 			} catch (ClassNotFoundException | IOException e1) {
@@ -270,6 +329,7 @@ public class ManagerScene {
 			}
 			VBox stab = new VBox();
 			stab.getChildren().addAll(empT);
+			stab.setPrefSize(700, 400);
 			Stage nStage = new Stage();
 			Scene scene = new Scene(stab);
 			nStage.setScene(scene);
@@ -383,9 +443,9 @@ public class ManagerScene {
 
 	}
 	@SuppressWarnings({ "unchecked", "resource" })
-	public static void aStock(String name,int quantity) throws IOException, ClassNotFoundException {
+	public static void aStock(String name,String singer,String genre,int quantity,double price) throws IOException, ClassNotFoundException {
 		String productsFile = "src/Database/products.dat";
-		Products newProd = new Products(name,quantity);
+		Products newProd = new Products(name,singer,genre,quantity, price);
 		ObjectInputStream readProd = new ObjectInputStream(new FileInputStream(productsFile));
 		ArrayList<Products> prod = (ArrayList<Products>) readProd.readObject();
 		prod.add(newProd);
@@ -394,7 +454,7 @@ public class ManagerScene {
 		outstream.close();
 	}
 	@SuppressWarnings({ "unchecked", "resource" })
-	public static void checkStockValid(String name,int quantity) throws FileNotFoundException, IOException, ClassNotFoundException {
+	public static void checkStockValid(String name,String singer,String genre,int quantity,double price) throws FileNotFoundException, IOException, ClassNotFoundException {
 		String productsFile = "src/Database/products.dat";
 		ObjectInputStream readProd = new ObjectInputStream(new FileInputStream(productsFile));
 		ArrayList<Products> prod = (ArrayList<Products>) readProd.readObject();
@@ -407,7 +467,7 @@ public class ManagerScene {
 			}
 		}
 		if(cnt==0) {
-			aStock(name,quantity);
+			aStock(name,singer,genre,quantity,price);
 		}
 		else {
 			prod.get(index).setQuantity(prod.get(index).getQuantity()+quantity);
@@ -417,7 +477,7 @@ public class ManagerScene {
 		}
 	}
 	@SuppressWarnings({ "unchecked", "resource" })
-	public static void removeProduct(String name,int quantity) throws FileNotFoundException, IOException, ClassNotFoundException {
+	public static void removeProduct(String name,int quantity,double price) throws FileNotFoundException, IOException, ClassNotFoundException {
 		String productsFile = "src/Database/products.dat";
 		ObjectInputStream readProd = new ObjectInputStream(new FileInputStream(productsFile));
 		ArrayList<Products> prod = ((ArrayList<Products>) readProd.readObject());

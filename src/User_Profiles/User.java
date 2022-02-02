@@ -8,6 +8,7 @@ public class User implements Serializable {
 	protected String surname;
 	protected String username;
 	protected String password;
+	protected double salary;
 	protected int userStatus; //0-cashier  1-manager  2-admin
 	public User() {
 		this.name="";
@@ -15,13 +16,21 @@ public class User implements Serializable {
 		this.username="";
 		this.password="";
 		this.userStatus=0;
+		this.salary=0;
 	}
-	public User(String name,String surname,String username,String password,int userStatus) {
+	public User(String name,String surname,String username,String password,int userStatus,double salary) {
 		this.name=name;
 		this.surname=surname;
 		this.username=username;
 		this.password=password;
 		this.userStatus=userStatus;
+		this.salary=salary;
+	}
+	public double getSalary() {
+		return salary;
+	}
+	public void setSalary(double salary) {
+		this.salary = salary;
 	}
 	public String getName() {
 		return name;
