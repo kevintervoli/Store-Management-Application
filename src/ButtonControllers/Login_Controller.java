@@ -92,11 +92,23 @@ public class Login_Controller extends Login implements EventHandler<ActionEvent>
 						else if(readUser.get(j).getUserStatus()==1) {
 							text="Login Successfully !";
 							Stage newWindow = new Stage();
-							Scene scene = new Scene(ManagerScene.createManagerScene());
+							Scene scene = null;
+							try {
+								scene = new Scene(ManagerScene.createManagerScene());
+							} catch (ClassNotFoundException | IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 							newWindow.setScene(scene);
 							newWindow.setTitle("Manager");
 							stage.hide();
 							newWindow.show();
+							try {
+								ManagerScene.checkLeftStock();
+							} catch (ClassNotFoundException | IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 							newWindow.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 						}
 						else if(readUser.get(j).getUserStatus()==2) {

@@ -242,34 +242,44 @@ public class UserManagement{
 				st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 			}
 			else {
-				int cnt=0;
-				for(int i=0;i<use.size();i++) {
-					if(usernamef.getText().equals(use.get(i).getUsername())) {
-						cnt++;
+				if(passwordf.getText().matches("([A-Za-z]{5}[0-9]{3})")) {
+					int cnt=0;
+					for(int i=0;i<use.size();i++) {
+						if(usernamef.getText().equals(use.get(i).getUsername())) {
+							cnt++;
+						}
+					}
+					if(cnt!=0) {
+						Stage st = new Stage();
+						Alert fail= new Alert(AlertType.ERROR);
+				        fail.setHeaderText("FAIL");
+				        fail.setContentText("User already exists ");
+				        fail.showAndWait();
+						st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
+					}
+					else {
+						try {
+							UserManagement.addUser(namef.getText(),surnamef.getText(),usernamef.getText(),passwordf.getText(),Integer.parseInt(statusf.getText()),Double.parseDouble(salaryf.getText()));
+							UserManagement.addEmploye(namef.getText(), surnamef.getText(), usernamef.getText(),Integer.parseInt(salaryf.getText()));
+							namef.clear();
+							surnamef.clear();
+							usernamef.clear();
+							passwordf.clear();
+							statusf.clear();
+							salaryf.clear();
+						} catch (NumberFormatException | ClassNotFoundException | IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					}
 				}
-				if(cnt!=0) {
+				else {
 					Stage st = new Stage();
 					Alert fail= new Alert(AlertType.ERROR);
 			        fail.setHeaderText("FAIL");
-			        fail.setContentText("User already exists ");
+			        fail.setContentText("Password doesnt fullfil requirements");
 			        fail.showAndWait();
 					st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
-				}
-				else {
-					try {
-						UserManagement.addUser(namef.getText(),surnamef.getText(),usernamef.getText(),passwordf.getText(),Integer.parseInt(statusf.getText()),Double.parseDouble(salaryf.getText()));
-						UserManagement.addEmploye(namef.getText(), surnamef.getText(), usernamef.getText(),Integer.parseInt(salaryf.getText()));
-						namef.clear();
-						surnamef.clear();
-						usernamef.clear();
-						passwordf.clear();
-						statusf.clear();
-						salaryf.clear();
-					} catch (NumberFormatException | ClassNotFoundException | IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
 				}
 			}
 		});

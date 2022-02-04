@@ -144,9 +144,9 @@ public class CashierScene {
 			newWindow.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 		});
 		
-		FontAwesomeIconView first  = new FontAwesomeIconView(FontAwesomeIcon.LINE_CHART,"27");
-		FontAwesomeIconView second = new FontAwesomeIconView(FontAwesomeIcon.GOOGLE_WALLET,"27");
-		FontAwesomeIconView third = new FontAwesomeIconView(FontAwesomeIcon.UNLOCK,"27");
+		FontAwesomeIconView first  = new FontAwesomeIconView(FontAwesomeIcon.LINE_CHART,"30");
+		FontAwesomeIconView second = new FontAwesomeIconView(FontAwesomeIcon.GOOGLE_WALLET,"30");
+		FontAwesomeIconView third = new FontAwesomeIconView(FontAwesomeIcon.UNLOCK,"30");
 		HBox hb1 = new HBox(first,checkStock);
 		hb1.setSpacing(5);
 		HBox hb2 = new HBox(second,createBill);

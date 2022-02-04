@@ -22,7 +22,11 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -55,8 +59,7 @@ import javafx.stage.WindowEvent;
 
 public class ManagerScene {
 	@SuppressWarnings({ "unchecked", "unused" })
-	public static StackPane createManagerScene() {
-
+	public static StackPane createManagerScene() throws FileNotFoundException, ClassNotFoundException, IOException {
 		Color btnColor= Color.web("#053C5E"); 
 		Color color=Color.web("#FFFFFF");
 		Color tfCol = Color.web("#F9F9FB");
@@ -78,12 +81,24 @@ public class ManagerScene {
 		Button checkCashiers = new Button("Check Cashiers");
 		Button checkStatistics = new Button("Check Statistics");
 		Button logOut = new Button("Log Out");
+		Button createBill = new Button("Create Bill");
+		createBill.setId("logB");
+		createBill.setFont(Font.font("OCR A Extended",15));
+		createBill.setTextFill(Color.WHITE);
+		createBill.setBackground(new Background(new BackgroundFill(btnColor, new CornerRadii(4), checkStock.getInsets())));
+		createBill.setId("logB");
+		createBill.setOnAction(e->{
+			new Create_Bill();
+			bp.setCenter(Create_Bill.billWindow());
+		});
 
 		pane.getStylesheets().add("css/style.css"); 
 		checkStatistics.setOnAction(e->{
 			StackPane pan = new StackPane();
+			/*Pie chart*/
 			String employeName = "src/Database/employe.dat";
-			ObjectInputStream secondinp = null;
+			ObjectInputStream secondinp = null
+					;
 			try {
 				secondinp = new ObjectInputStream(new FileInputStream(employeName));
 			} catch (IOException e1) {
@@ -108,7 +123,28 @@ public class ManagerScene {
 				 Tooltip.install(data.getNode(), toolTip);
 			});
 			
-			pan.getChildren().add(pieChart);
+			/* Bar Chart*/
+			ObservableList<Employe> list = FXCollections.observableArrayList();
+			for(int i=0;i<employe.size();i++) {
+				list.add(employe.get(i));
+			}
+			CategoryAxis xAxis=new CategoryAxis();
+			NumberAxis yAxis=new NumberAxis();
+			BarChart<String, Number> bar=new BarChart<String, Number>(xAxis, yAxis);
+			xAxis.setLabel("Employee");
+			yAxis.setLabel("Sold items");
+			XYChart.Series series=new XYChart.Series<>();
+			for(int i=0;i<list.size();i++)
+			{
+				series.getData().add(new XYChart.Data(list.get(i).getName(), list.get(i).getSoldItem()));
+			}
+			bar.getData().add(series);
+			bar.setAlternativeRowFillVisible(true);
+			HBox charts = new HBox();
+			charts.getChildren().addAll(pieChart,bar);
+			charts.setAlignment(Pos.CENTER);
+			charts.setSpacing(10);
+			pan.getChildren().add(charts);
 			bp.setCenter(pan);
 					
 		});
@@ -339,10 +375,11 @@ public class ManagerScene {
 			newWindow.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 		});
 		
-		FontAwesomeIconView first  = new FontAwesomeIconView(FontAwesomeIcon.LINE_CHART,"27");
-		FontAwesomeIconView second  = new FontAwesomeIconView(FontAwesomeIcon.USER,"27");
-		FontAwesomeIconView third  = new FontAwesomeIconView(FontAwesomeIcon.BAR_CHART,"27");
-		FontAwesomeIconView fourth  = new FontAwesomeIconView(FontAwesomeIcon.UNLOCK,"27");
+		FontAwesomeIconView first  = new FontAwesomeIconView(FontAwesomeIcon.LINE_CHART,"30");
+		FontAwesomeIconView second  = new FontAwesomeIconView(FontAwesomeIcon.USER,"30");
+		FontAwesomeIconView third  = new FontAwesomeIconView(FontAwesomeIcon.BAR_CHART,"30");
+		FontAwesomeIconView fourth  = new FontAwesomeIconView(FontAwesomeIcon.UNLOCK,"30");
+		FontAwesomeIconView fifth = new FontAwesomeIconView(FontAwesomeIcon.GOOGLE_WALLET,"30");
 		
 		HBox hb1 = new HBox(first,checkStock);
 		hb1.setSpacing(5);
@@ -352,8 +389,10 @@ public class ManagerScene {
 		hb3.setSpacing(5);
 		HBox hb4 = new HBox(fourth,logOut);
 		hb4.setSpacing(5);
+		HBox hb5 = new HBox(fifth,createBill);
+		hb5.setSpacing(5);
 		
-		FlowPane flwp = new FlowPane(hb1,hb2,hb3,hb4);
+		FlowPane flwp = new FlowPane(hb1,hb5,hb2,hb3,hb4);
 		flwp.setHgap(25);
 		flwp.setAlignment(Pos.CENTER);
 		
@@ -488,5 +527,19 @@ public class ManagerScene {
 		outstream.writeObject(prod);
 		outstream.close();
 		setTableContent();
+	}
+	public static void checkLeftStock() throws FileNotFoundException, IOException, ClassNotFoundException {
+		String productsFile = "src/Database/products.dat";
+		ObjectInputStream readProd = new ObjectInputStream(new FileInputStream(productsFile));
+		ArrayList<Products> prod = ((ArrayList<Products>) readProd.readObject());
+		for(int i = 0 ;i <prod.size();i++) {
+			if(prod.get(i).getQuantity() < 5) {
+				Alert fail= new Alert(AlertType.ERROR);
+		        fail.setHeaderText("FAIL");
+		        fail.setContentText("CHECK NUMBER OF STOCK !");
+		        fail.showAndWait();
+		        break;
+			}
+		}
 	}
 }

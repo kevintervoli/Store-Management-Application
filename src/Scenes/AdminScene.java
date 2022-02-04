@@ -24,7 +24,11 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -61,6 +65,7 @@ public class AdminScene {
 	private static Button logOut;
 	private static Button employeList ;
 	private static Button usersList;
+	private static Button createBill;
 	static BorderPane tab = new BorderPane();
 
 	@SuppressWarnings({ "unchecked", "unused", "hiding" })
@@ -87,6 +92,7 @@ public class AdminScene {
 		 logOut = new Button("Log Out");
 		 employeList = new Button("Employe List");
 		 usersList = new Button("Users List");
+		 createBill = new Button("Create Bill");
 		
 		pane.getStylesheets().add("css/style.css"); 
 		
@@ -96,6 +102,15 @@ public class AdminScene {
 		logOut.setId("logB");
 		checkStatistics.setId("logB");
 		usersList.setId("logB");
+		createBill.setId("logB");
+		createBill.setFont(Font.font("OCR A Extended",15));
+		createBill.setTextFill(Color.WHITE);
+		createBill.setBackground(new Background(new BackgroundFill(btnColor, new CornerRadii(4), checkStock.getInsets())));
+		createBill.setId("logB");
+		createBill.setOnAction(e->{
+			new Create_Bill();
+			bp.setCenter(Create_Bill.billWindow());
+		});
 		employeList.setOnAction(e->{
 			Color col = Color.web("#C3C9E9");
 			TableView<Employe> empT = new TableView<Employe>();
@@ -390,8 +405,10 @@ public class AdminScene {
 		});
 		checkStatistics.setOnAction(e->{
 			StackPane pan = new StackPane();
+			/*Pie chart*/
 			String employeName = "src/Database/employe.dat";
-			ObjectInputStream secondinp = null;
+			ObjectInputStream secondinp = null
+					;
 			try {
 				secondinp = new ObjectInputStream(new FileInputStream(employeName));
 			} catch (IOException e1) {
@@ -416,7 +433,28 @@ public class AdminScene {
 				 Tooltip.install(data.getNode(), toolTip);
 			});
 			
-			pan.getChildren().add(pieChart);
+			/* Bar Chart*/
+			ObservableList<Employe> list = FXCollections.observableArrayList();
+			for(int i=0;i<employe.size();i++) {
+				list.add(employe.get(i));
+			}
+			CategoryAxis xAxis=new CategoryAxis();
+			NumberAxis yAxis=new NumberAxis();
+			BarChart<String, Number> bar=new BarChart<String, Number>(xAxis, yAxis);
+			xAxis.setLabel("Employee");
+			yAxis.setLabel("Sold items");
+			XYChart.Series series=new XYChart.Series<>();
+			for(int i=0;i<list.size();i++)
+			{
+				series.getData().add(new XYChart.Data(list.get(i).getName(), list.get(i).getSoldItem()));
+			}
+			bar.getData().add(series);
+			bar.setAlternativeRowFillVisible(true);
+			HBox charts = new HBox();
+			charts.getChildren().addAll(pieChart,bar);
+			charts.setAlignment(Pos.CENTER);
+			charts.setSpacing(10);
+			pan.getChildren().add(charts);
 			bp.setCenter(pan);
 					
 		});
@@ -427,6 +465,7 @@ public class AdminScene {
 		FontAwesomeIconView fourth  = new FontAwesomeIconView(FontAwesomeIcon.UNLOCK,"30");
 		FontAwesomeIconView fifth = new FontAwesomeIconView(FontAwesomeIcon.USER,"30");
 		FontAwesomeIconView sixth = new FontAwesomeIconView(FontAwesomeIcon.USERS,"30");
+		FontAwesomeIconView seventh = new FontAwesomeIconView(FontAwesomeIcon.MONEY,"30");
 		
 		HBox hb1 = new HBox(first,checkStock);
 		hb1.setSpacing(5);
@@ -440,8 +479,10 @@ public class AdminScene {
 		hb5.setSpacing(5);
 		HBox hb6 = new HBox(sixth,usersList);
 		hb6.setSpacing(5);
+		HBox hb7 = new HBox(seventh,createBill);
+		hb7.setSpacing(5);
 		
-		FlowPane flwp = new FlowPane(hb1,hb2,hb5,hb6,hb3,hb4);
+		FlowPane flwp = new FlowPane(hb1,hb7,hb2,hb5,hb6,hb3,hb4);
 		flwp.setVgap(15);
 		flwp.setHgap(25);
 		flwp.setAlignment(Pos.CENTER);
