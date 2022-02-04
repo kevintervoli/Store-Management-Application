@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 
 
 public class Login_Controller extends Login implements EventHandler<ActionEvent>{
-
+	public static String currentUser;
 	Color backGround = Color.web("#C4D6ED");
 	public Login_Controller() {
 		super(stage);
@@ -77,6 +77,7 @@ public class Login_Controller extends Login implements EventHandler<ActionEvent>
 				System.out.println(readUser.get(j).getUsername()+" "+readUser.get(j).getPassword());
 				if(username.getText().equals(readUser.get(j).getUsername())){
 					if(password.getText().equals(readUser.get(j).getPassword())) {
+						currentUser=username.getText();
 						if(readUser.get(j).getUserStatus()==0) {
 							text="Login Successfully !";
 							Stage newWindow = new Stage();

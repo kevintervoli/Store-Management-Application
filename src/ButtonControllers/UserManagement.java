@@ -17,10 +17,12 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
@@ -107,7 +109,7 @@ public class UserManagement{
 		passwordf.setPrefSize(350, 40);
 		
 		statusf.setFont(Font.font("OCR A Extended",18));
-		statusf.setPromptText("Enter user status !");
+		statusf.setPromptText("0-Cashier  1-Manager  2-Admin ");
 		statusf.setBorder(textFBorder);
 		statusf.setBackground(bckgStyle);
 		statusf.setPrefSize(350, 40);
@@ -182,24 +184,22 @@ public class UserManagement{
 			}
 			System.out.println(cnt);
 			if(cnt==0) {
-				((Stage)(((Node)e.getSource()).getScene().getWindow())).close();
-				Stage  st= new Stage();
-				Label alertS =new Label("CAN'T FIND USER !");
-				alertS.setFont(Font.font("OCR A Extended",17));
-				alertS.setTextFill(Color.RED);
-				StackPane alert = new StackPane();
-				alert.setPrefSize(250, 75);
-				alert.getChildren().add(alertS);
-				Scene scene  = new Scene(alert);
-				st.setScene(scene);
-				st.show();
-				st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
+				Alert fail= new Alert(AlertType.ERROR);
+		        fail.setHeaderText("FAIL");
+		        fail.setContentText("Cant find user !");
+		        fail.showAndWait();
 
 			}
 			else {
 				try {
 					UserManagement.removeUser(usernamef.getText());
 					UserManagement.removeEmploye(usernamef.getText());
+					namef.clear();
+					surnamef.clear();
+					usernamef.clear();
+					passwordf.clear();
+					statusf.clear();
+					salaryf.clear();
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -210,7 +210,7 @@ public class UserManagement{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				((Stage)(((Node)e.getSource()).getScene().getWindow())).close();
+				
 			}
 			
 		});
@@ -234,49 +234,68 @@ public class UserManagement{
 				e1.printStackTrace();
 			}
 			if(namef.getText().isEmpty() || surnamef.getText().isEmpty()|| usernamef.getText().isEmpty() || passwordf.getText().isEmpty() || statusf.getText().isEmpty() || salaryf.getText().isEmpty()) {
-				Stage  st= new Stage();
-				Label alertS =new Label("CHECK EMPTY FIELDS !");
-				alertS.setFont(Font.font("OCR A Extended",17));
-				alertS.setTextFill(Color.RED);
-				StackPane alert = new StackPane();
-				alert.setPrefSize(250, 75);
-				alert.getChildren().add(alertS);
-				Scene scene  = new Scene(alert);
-				st.setScene(scene);
-				st.show();
+				Stage st = new Stage();
+				Alert fail= new Alert(AlertType.WARNING);
+		        fail.setHeaderText("FAIL");
+		        fail.setContentText("Check empty fields !");
+		        fail.showAndWait();
 				st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 			}
-			int cnt=0;
-			for(int i=0;i<use.size();i++) {
-				if(usernamef.getText().equals(use.get(i).getUsername())) {
-					cnt++;
-				}
+			else if(status.getText().matches("[A-Za-z]+")) {
+				Stage st = new Stage();
+				Alert fail= new Alert(AlertType.ERROR);
+		        fail.setHeaderText("FAIL");
+		        fail.setContentText("Check status field !");
+		        fail.showAndWait();
+				st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 			}
-			if(cnt!=0) {
-				Stage  st= new Stage();
-				Label alertS =new Label("USER ALREADY EXISTS !");
-				alertS.setFont(Font.font("OCR A Extended",17));
-				alertS.setTextFill(Color.RED);
-				StackPane alert = new StackPane();
-				alert.setPrefSize(250, 75);
-				alert.getChildren().add(alertS);
-				Scene scene  = new Scene(alert);
-				st.setScene(scene);
-				st.show();
+			else if (Integer.parseInt(statusf.getText())!=0 ||Integer.parseInt(statusf.getText())!=1 || Integer.parseInt(statusf.getText())!=2) {
+				Stage st = new Stage();
+				Alert fail= new Alert(AlertType.ERROR);
+		        fail.setHeaderText("FAIL");
+		        fail.setContentText("Check status field !");
+		        fail.showAndWait();
 				st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 			}
 			else {
-				try {
-					UserManagement.addUser(namef.getText(),surnamef.getText(),usernamef.getText(),passwordf.getText(),Integer.parseInt(statusf.getText()),Double.parseDouble(salaryf.getText()));
-					UserManagement.addEmploye(namef.getText(), surnamef.getText(), usernamef.getText(),Integer.parseInt(salaryf.getText()));
-				} catch (NumberFormatException | ClassNotFoundException | IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				int cnt=0;
+				for(int i=0;i<use.size();i++) {
+					if(usernamef.getText().equals(use.get(i).getUsername())) {
+						cnt++;
+					}
+				}
+				if(cnt!=0) {
+					Stage st = new Stage();
+					Alert fail= new Alert(AlertType.ERROR);
+			        fail.setHeaderText("FAIL");
+			        fail.setContentText("User already exists ");
+			        fail.showAndWait();
+					st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
+				}
+				else {
+					try {
+						UserManagement.addUser(namef.getText(),surnamef.getText(),usernamef.getText(),passwordf.getText(),Integer.parseInt(statusf.getText()),Double.parseDouble(salaryf.getText()));
+						UserManagement.addEmploye(namef.getText(), surnamef.getText(), usernamef.getText(),Integer.parseInt(salaryf.getText()));
+						namef.clear();
+						surnamef.clear();
+						usernamef.clear();
+						passwordf.clear();
+						statusf.clear();
+						salaryf.clear();
+					} catch (NumberFormatException | ClassNotFoundException | IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
 		clear.setOnAction(e->{
-			((Stage)(((Node)e.getSource()).getScene().getWindow())).close();
+			namef.clear();
+			surnamef.clear();
+			usernamef.clear();
+			passwordf.clear();
+			statusf.clear();
+			salaryf.clear();
 		});
 		
 		VBox vbo = new VBox(btns);

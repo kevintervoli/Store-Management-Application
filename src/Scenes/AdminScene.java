@@ -25,12 +25,14 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
@@ -269,16 +271,10 @@ public class AdminScene {
 				@Override
 				public void handle(ActionEvent arg0) {
 					if(t1.getText().matches("")|| t2.getText().matches("") || t3.getText().matches("")||t4.getText().matches("")) {
-						Stage  st= new Stage();
-						Label alertS =new Label("Can not add ore remove an empty field !");
-						alertS.setFont(Font.font("OCR A Extended",17));
-						alertS.setTextFill(Color.RED);
-						StackPane alert = new StackPane();
-						alert.setPrefSize(250, 200);
-						alert.getChildren().add(alertS);
-						Scene scene  = new Scene(alert);
-						st.setScene(scene);
-						st.show();
+						Alert fail= new Alert(AlertType.WARNING);
+				        fail.setHeaderText("FAIL");
+				        fail.setContentText("Empty field !");
+				        fail.showAndWait();
 						
 					}
 					else {
@@ -300,16 +296,10 @@ public class AdminScene {
 				public void handle(ActionEvent arg0) {
 					try {
 						if(t1.getText().matches("")){
-							Stage  st= new Stage();
-							Label alertS =new Label("Can not add ore remove an empty field !");
-							alertS.setFont(Font.font("OCR A Extended",17));
-							alertS.setTextFill(Color.RED);
-							StackPane alert = new StackPane();
-							alert.setPrefSize(250, 200);
-							alert.getChildren().add(alertS);
-							Scene scene  = new Scene(alert);
-							st.setScene(scene);
-							st.show();
+							Alert fail= new Alert(AlertType.WARNING);
+					        fail.setHeaderText("FAIL");
+					        fail.setContentText("Empty field !");
+					        fail.showAndWait();
 			}else {
 				table.getItems().clear();
 				removeProduct(t1.getText(),Integer.parseInt(t2.getText()),Double.parseDouble(t5.getText()));

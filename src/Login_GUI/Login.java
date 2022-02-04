@@ -35,13 +35,11 @@ public class Login {
 	public static Stage stage;
 	public static TextField username;
 	public static PasswordField password;
-	public static Label msg;
-	
+	public static Label msg;	
 	public Login(Stage primaryStage) {
 		stage=primaryStage;
 	}
-	
-	public static AnchorPane login() {
+		public static AnchorPane login() {
 		AnchorPane pane = new AnchorPane();
 		Color fontColor= Color.web("#053C5E"); 
 		Color backGround = Color.web("#FFFFFF");
@@ -70,7 +68,6 @@ public class Login {
 		userIc.setFill(fontColor);
 		FontAwesomeIconView lockIc = new FontAwesomeIconView(FontAwesomeIcon.LOCK,"30");
 		lockIc.setFill(fontColor);
-		
 		username = new TextField();
 		username.setFont(Font.font("OCR A Extended",12));
 		username.setPromptText("Enter Username !");

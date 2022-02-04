@@ -22,11 +22,13 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -177,28 +179,17 @@ public class ManagerScene {
 				public void handle(ActionEvent arg0) {
 					if(t1.getText().matches("")) {
 						Stage  st= new Stage();
-						Label alertS =new Label("Can not add ore remove an empty field !");
-						alertS.setFont(Font.font("OCR A Extended",17));
-						alertS.setTextFill(Color.RED);
-						StackPane alert = new StackPane();
-						alert.setPrefSize(250, 75);
-						alert.getChildren().add(alertS);
-						Scene scene  = new Scene(alert);
-						st.setScene(scene);
-						st.show();
+						Alert fail= new Alert(AlertType.WARNING);
+				        fail.setHeaderText("FAIL");
+				        fail.setContentText("Empty field !");
+				        fail.showAndWait();
 						st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));;
 					}
-					else if(t2.getText().matches("^[0-9]+")) {
-						Stage  st= new Stage();
-						Label alertS =new Label("Enter an Integer for quantity !");
-						alertS.setFont(Font.font("OCR A Extended",17));
-						alertS.setTextFill(Color.RED);
-						StackPane alert = new StackPane();
-						alert.setPrefSize(250, 75);
-						alert.getChildren().add(alertS);
-						Scene scene  = new Scene(alert);
-						st.setScene(scene);
-						st.show();
+					else if(t2.getText().matches("[0-9]+")) {
+						Alert fail= new Alert(AlertType.WARNING);
+				        fail.setHeaderText("FAIL");
+				        fail.setContentText("Enter an integer for quantity");
+				        fail.showAndWait();
 					}
 					else {
 						try {
@@ -218,15 +209,10 @@ public class ManagerScene {
 					try {
 						if(t1.getText().matches("")){
 							Stage  st= new Stage();
-							Label alertS =new Label("Can not add ore remove an empty field !");
-							alertS.setFont(Font.font("OCR A Extended",17));
-							alertS.setTextFill(Color.RED);
-							StackPane alert = new StackPane();
-							alert.setPrefSize(250, 75);
-							alert.getChildren().add(alertS);
-							Scene scene  = new Scene(alert);
-							st.setScene(scene);
-							st.show();
+							Alert fail= new Alert(AlertType.WARNING);
+					        fail.setHeaderText("FAIL");
+					        fail.setContentText("Empty field !");
+					        fail.showAndWait();
 							st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 			}else {
 				removeProduct(t1.getText(),Integer.parseInt(t2.getText()),Double.parseDouble(t5.getText()));

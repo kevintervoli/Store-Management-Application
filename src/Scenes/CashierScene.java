@@ -126,6 +126,7 @@ public class CashierScene {
 		createBill.setBackground(new Background(new BackgroundFill(btnColor, new CornerRadii(4), checkStock.getInsets())));
 		createBill.setId("logB");
 		createBill.setOnAction(e->{
+			new Create_Bill();
 			bp.setCenter(Create_Bill.billWindow());
 		});
 		
@@ -155,7 +156,7 @@ public class CashierScene {
 		
 		FlowPane flwp = new FlowPane(hb1,hb2,hb3);
 		flwp.setHgap(25);
-		flwp.setVgap(15);
+		flwp.setVgap(30);
 		flwp.setHgap(25);
 		flwp.setAlignment(Pos.CENTER);
 		flwp.setPrefHeight(35);

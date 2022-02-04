@@ -13,6 +13,20 @@
 	-fx-background-color: transparent;
 	-fx-text-fill: #053C5E;     
 }
+#logB2 {
+    -fx-background-color: #053C5E;
+    -fx-text-fill: white;
+    -fx-font-size : 20;
+    -fx-font-family : "OCR A Extended";
+    -fx-border-color: #053C5E;
+    -fx-border-radius: 4;
+ 
+}
+
+#logB2:hover {
+	-fx-background-color: transparent;
+	-fx-text-fill: #053C5E;     
+}
 
 .table-view {
 	-fx-border-color: transparent;
