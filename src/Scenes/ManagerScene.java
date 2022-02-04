@@ -22,12 +22,14 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -78,7 +80,38 @@ public class ManagerScene {
 		Button logOut = new Button("Log Out");
 
 		pane.getStylesheets().add("css/style.css"); 
-		
+		checkStatistics.setOnAction(e->{
+			StackPane pan = new StackPane();
+			String employeName = "src/Database/employe.dat";
+			ObjectInputStream secondinp = null;
+			try {
+				secondinp = new ObjectInputStream(new FileInputStream(employeName));
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			ArrayList<Employe> employe = null;
+			try {
+			 employe = (ArrayList<Employe>) secondinp.readObject();
+			} catch (ClassNotFoundException | IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList();
+			for(int i=0;i<employe.size();i++) {
+				pieData.add(new PieChart.Data(employe.get(i).getName(), employe.get(i).getSoldItem()));
+			}
+			PieChart pieChart = new PieChart(pieData);
+			pieChart.getData().forEach(data->{
+				 String percentage = String.format("%.2f%%", (data.getPieValue() / 100));
+				 Tooltip toolTip = new Tooltip(percentage);
+				 Tooltip.install(data.getNode(), toolTip);
+			});
+			
+			pan.getChildren().add(pieChart);
+			bp.setCenter(pan);
+					
+		});
 		checkStock.setFont(Font.font("OCR A Extended",15));
 		checkStock.setTextFill(Color.WHITE);
 		checkStock.setBackground(new Background(new BackgroundFill(btnColor, new CornerRadii(4), checkStock.getInsets())));
@@ -156,7 +189,7 @@ public class ManagerScene {
 			t4.setBackground(tfBack);
 			t4.setPrefSize(200, 30);
 			
-			t5.setPromptText("Enter the singer :");
+			t5.setPromptText("Enter the price :");
 			t5.setFont(Font.font("OCR A Extended",12));
 			t5.setBorder(textFBorder);
 			t5.setBackground(tfBack);
@@ -185,15 +218,23 @@ public class ManagerScene {
 				        fail.showAndWait();
 						st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));;
 					}
-					else if(t2.getText().matches("[0-9]+")) {
+					else if(t2.getText().matches("[^0-9]+")) {
 						Alert fail= new Alert(AlertType.WARNING);
 				        fail.setHeaderText("FAIL");
 				        fail.setContentText("Enter an integer for quantity");
 				        fail.showAndWait();
 					}
+					else if(t5.getText().matches("[^0-9]+")) {
+						Alert fail= new Alert(AlertType.WARNING);
+				        fail.setHeaderText("FAIL");
+				        fail.setContentText("Enter an integer for price");
+				        fail.showAndWait();
+					}
 					else {
 						try {
+							table.getItems().clear();
 							checkStockValid(t1.getText(),t4.getText(),t3.getText(),Integer.parseInt(t2.getText()),Double.parseDouble(t5.getText()));
+							table.setItems((ObservableList<Products>) ManagerScene.addProduct());
 						} catch (NumberFormatException | ClassNotFoundException | IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -215,7 +256,9 @@ public class ManagerScene {
 					        fail.showAndWait();
 							st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 			}else {
+				table.getItems().clear();
 				removeProduct(t1.getText(),Integer.parseInt(t2.getText()),Double.parseDouble(t5.getText()));
+				table.setItems((ObservableList<Products>) ManagerScene.addProduct());
 			}
 
 					} catch (ClassNotFoundException | IOException e) {
@@ -235,6 +278,7 @@ public class ManagerScene {
 		checkCashiers.setOnAction(e->{
 			Color col = Color.web("#C3C9E9");
 			TableView<Employe> empT = new TableView<Employe>();
+			empT.setPrefSize(290,800);
 			empT.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 			empT.setEditable(true);
 			empT.getStylesheets().add("css/style.css");
@@ -257,7 +301,11 @@ public class ManagerScene {
 			salary.setMinWidth(200);
 			salary.setCellValueFactory(new PropertyValueFactory<>("salary"));
 			
-			empT.getColumns().addAll(name,surname,username,salary);
+			TableColumn<Employe,Integer> soldItems = new TableColumn<>("SOLD ITEMS");
+			soldItems.setMinWidth(200);
+			soldItems.setCellValueFactory(new PropertyValueFactory<>("soldItem"));
+			
+			empT.getColumns().addAll(name,surname,username,salary,soldItems);
 			try {
 				empT.setItems((ObservableList<Employe>)ManagerScene.setTableContent());
 			} catch (ClassNotFoundException | IOException e1) {
@@ -385,6 +433,7 @@ public class ManagerScene {
 		ObjectOutputStream outstream = new ObjectOutputStream(new FileOutputStream(productsFile));
 		outstream.writeObject(prod);
 		outstream.close();
+		setTableContent();
 	}
 	@SuppressWarnings({ "unchecked", "resource" })
 	public static void checkStockValid(String name,String singer,String genre,int quantity,double price) throws FileNotFoundException, IOException, ClassNotFoundException {
@@ -401,12 +450,14 @@ public class ManagerScene {
 		}
 		if(cnt==0) {
 			aStock(name,singer,genre,quantity,price);
+
 		}
 		else {
 			prod.get(index).setQuantity(prod.get(index).getQuantity()+quantity);
 			ObjectOutputStream outstream = new ObjectOutputStream(new FileOutputStream(productsFile));
 			outstream.writeObject(prod);
 			outstream.close();
+			
 		}
 	}
 	@SuppressWarnings({ "unchecked", "resource" })
@@ -431,10 +482,11 @@ public class ManagerScene {
 			ObjectOutputStream outstream = new ObjectOutputStream(new FileOutputStream(productsFile));
 			outstream.writeObject(prod);
 			outstream.close();
+
 		}
 		ObjectOutputStream outstream = new ObjectOutputStream(new FileOutputStream(productsFile));
 		outstream.writeObject(prod);
 		outstream.close();
-
+		setTableContent();
 	}
 }

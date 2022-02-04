@@ -155,21 +155,31 @@ public class Create_Bill{
 
 			try {
 				if(contact.getText().isEmpty() || phone.getText().isEmpty() || email.getText().isEmpty() || nam.getText().isEmpty() ||quan.getText().isEmpty() || shippingfield.getText().isEmpty()) {
-					
-					addBill( Login_Controller.currentUser,contact.getText(),phone.getText(),email.getText(),nam.getText(),quan.getText(),shippingfield.getText(),getPayment(nam.getText(),Integer.parseInt(quan.getText())));
-					billNum++;
-					contact.clear();
-					phone.clear();
-					email.clear();
-					quan.clear();
-					nam.clear();
-					shippingfield.clear();
+					Alert fail= new Alert(AlertType.WARNING);
+			        fail.setHeaderText("FAIL");
+			        fail.setContentText("Check empty fields");
+			        fail.showAndWait();
 				}
 				else {
 					if(phone.getText().matches("[0-9]{9}") || phone.getText().matches("\\+{1}[0-9]{12}")) {
 						if(validation(nam.getText(),Integer.parseInt(quan.getText()))) {
 							addBill( Login_Controller.currentUser,contact.getText(),phone.getText(),email.getText(),nam.getText(),quan.getText(),shippingfield.getText(),getPayment(nam.getText(),Integer.parseInt(quan.getText())));
 							billNum++;
+							String employeName = "src/Database/employe.dat";
+							ObjectInputStream readEmployes= new ObjectInputStream(new FileInputStream(employeName));
+							ArrayList<Employe> employes = (ArrayList<Employe>) readEmployes.readObject();
+							int index=-1;
+							for(int i=0;i<employes.size();i++) {
+								if(employes.get(i).getUsername().equals(Login_Controller.currentUser)) {
+									index=i;
+								}
+							}
+							employes.get(index).setSoldItem(employes.get(index).getSoldItem()+Integer.parseInt(quan.getText()));
+							ObjectOutputStream outstream = new ObjectOutputStream(new FileOutputStream(employeName));
+							outstream.writeObject(employes);
+							outstream.close();
+							
+							
 							contact.clear();
 							phone.clear();
 							email.clear();

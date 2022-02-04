@@ -8,13 +8,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-
 import javax.swing.SpringLayout.Constraints;
-
 import ButtonControllers.UserManagement;
 import Login_GUI.Login;
 import User_Profiles.Employe;
 import User_Profiles.Products;
+import User_Profiles.User;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
@@ -25,6 +24,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -32,6 +32,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -54,11 +55,12 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 public class AdminScene {
-	 public static Button checkStock;
-	 public static Button checkEmploye;
-	 public static Button checkStatistics ;
-	public static Button logOut;
-	public static Button employeList ;
+	private static Button checkStock;
+	private static Button checkEmploye;
+	private static Button checkStatistics ;
+	private static Button logOut;
+	private static Button employeList ;
+	private static Button usersList;
 	static BorderPane tab = new BorderPane();
 
 	@SuppressWarnings({ "unchecked", "unused", "hiding" })
@@ -84,6 +86,7 @@ public class AdminScene {
 		 checkStatistics = new Button("Check Statistics");
 		 logOut = new Button("Log Out");
 		 employeList = new Button("Employe List");
+		 usersList = new Button("Users List");
 		
 		pane.getStylesheets().add("css/style.css"); 
 		
@@ -92,10 +95,12 @@ public class AdminScene {
 		checkStock.setId("logB");
 		logOut.setId("logB");
 		checkStatistics.setId("logB");
+		usersList.setId("logB");
 		employeList.setOnAction(e->{
 			Color col = Color.web("#C3C9E9");
 			TableView<Employe> empT = new TableView<Employe>();
 			empT.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+			empT.setPrefSize(290,800);
 			empT.setEditable(true);
 			empT.getStylesheets().add("css/style.css");
 			empT.setId(".table-view");
@@ -117,8 +122,11 @@ public class AdminScene {
 			salary.setMinWidth(200);
 			salary.setCellValueFactory(new PropertyValueFactory<>("salary"));
 			
-			empT.getColumns().addAll(name,surname,username,salary);
-			empT.setPrefHeight(500);
+			TableColumn<Employe,Integer> soldItems = new TableColumn<>("SOLD ITEMS");
+			soldItems.setMinWidth(200);
+			soldItems.setCellValueFactory(new PropertyValueFactory<>("soldItem"));
+			
+			empT.getColumns().addAll(name,surname,username,salary,soldItems);
 			try {
 				empT.setItems((ObservableList<Employe>)AdminScene.setContent());
 			} catch (ClassNotFoundException | IOException e1) {
@@ -127,7 +135,7 @@ public class AdminScene {
 			}
 			VBox stab = new VBox();
 			stab.getChildren().addAll(empT);
-			stab.setPrefHeight(500);
+			stab.setPrefSize(700, 500);
 			bp.setCenter(stab);
 		});
 		checkStock.setOnAction(e->{
@@ -220,7 +228,8 @@ public class AdminScene {
 			t1.setFont(Font.font("OCR A Extended",12));
 			t1.setBorder(textFBorder);
 			t1.setBackground(tfBack);
-
+			t1.setPrefSize(200, 30);
+			
 			t1.setPromptText("Enter the album name :");
 			t1.setAlignment(Pos.CENTER);
 			
@@ -228,28 +237,28 @@ public class AdminScene {
 			t2.setFont(Font.font("OCR A Extended",12));
 			t2.setBorder(textFBorder);
 			t2.setBackground(tfBack);
-
+			t2.setPrefSize(200, 30);
 			t2.setAlignment(Pos.CENTER);
-			
+		
 			t3.setPromptText("Enter the genre :");
 			t3.setFont(Font.font("OCR A Extended",12));
 			t3.setBorder(textFBorder);
 			t3.setBackground(tfBack);
-			
+			t3.setPrefSize(200, 30);
 			t3.setAlignment(Pos.CENTER);
 			
 			t4.setPromptText("Enter the singer :");
 			t4.setFont(Font.font("OCR A Extended",12));
 			t4.setBorder(textFBorder);
 			t4.setBackground(tfBack);
-
+			t4.setPrefSize(200, 30);
 			t4.setAlignment(Pos.CENTER);
 			
 			t5.setPromptText("Enter the price :");
 			t5.setFont(Font.font("OCR A Extended",12));
 			t5.setBorder(textFBorder);
 			t5.setBackground(tfBack);
-
+			t5.setPrefSize(200, 30);
 			t5.setAlignment(Pos.CENTER);
 			
 			
@@ -276,6 +285,18 @@ public class AdminScene {
 				        fail.setContentText("Empty field !");
 				        fail.showAndWait();
 						
+					}
+					else if(t2.getText().matches("[^0-9]+")) {
+						Alert fail= new Alert(AlertType.WARNING);
+				        fail.setHeaderText("FAIL");
+				        fail.setContentText("Enter an integer for quantity");
+				        fail.showAndWait();
+					}
+					else if(t5.getText().matches("[^0-9]+")) {
+						Alert fail= new Alert(AlertType.WARNING);
+				        fail.setHeaderText("FAIL");
+				        fail.setContentText("Enter an integer for price");
+				        fail.showAndWait();
 					}
 					else {
 						try {
@@ -327,12 +348,85 @@ public class AdminScene {
 			newWindow.show();
 			newWindow.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 		});
+		usersList.setOnAction(e->{
+			TableView<User> table = new TableView<User>();
+			table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+			table.setEditable(true);
+			table.getStylesheets().add("css/style.css");
+			table.setId(".table-view");
+			table.setPrefSize(290,800);
+			TableColumn<User,String> name = new TableColumn<>("NAME");
+			name.setMinWidth(200);
+			name.setCellValueFactory(new PropertyValueFactory<>("Name"));
+			
+			TableColumn<User,String> surname = new TableColumn<>("SURNAME");
+			surname.setMinWidth(200);
+			surname.setCellValueFactory(new PropertyValueFactory<>("Surname"));
+			
+			TableColumn<User,String> username = new TableColumn<>("USERNAME");
+			username.setMinWidth(200);
+			username.setCellValueFactory(new PropertyValueFactory<>("Username"));
+			
+			TableColumn<User,String> password = new TableColumn<>("PASSWORD");
+			password.setMinWidth(200);
+			password.setCellValueFactory(new PropertyValueFactory<>("Password"));
+			
+			TableColumn<User,Double> salary = new TableColumn<>("SALARY");
+			salary.setMinWidth(200);
+			salary.setCellValueFactory(new PropertyValueFactory<>("Salary"));
+			
+			
+			table.getColumns().addAll(name,surname,username,password,salary);
+			try {
+				table.setItems(AdminScene.setUserContent());
+			} catch (ClassNotFoundException | IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			VBox stab = new VBox();
+			stab.getChildren().addAll(table);
+			stab.setPrefSize(700, 500);
+			bp.setCenter(stab);
+		});
+		checkStatistics.setOnAction(e->{
+			StackPane pan = new StackPane();
+			String employeName = "src/Database/employe.dat";
+			ObjectInputStream secondinp = null;
+			try {
+				secondinp = new ObjectInputStream(new FileInputStream(employeName));
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			ArrayList<Employe> employe = null;
+			try {
+			 employe = (ArrayList<Employe>) secondinp.readObject();
+			} catch (ClassNotFoundException | IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList();
+			for(int i=0;i<employe.size();i++) {
+				pieData.add(new PieChart.Data(employe.get(i).getName(), employe.get(i).getSoldItem()));
+			}
+			PieChart pieChart = new PieChart(pieData);
+			pieChart.getData().forEach(data->{
+				 String percentage = String.format("%.2f%%", (data.getPieValue() / 100));
+				 Tooltip toolTip = new Tooltip(percentage);
+				 Tooltip.install(data.getNode(), toolTip);
+			});
+			
+			pan.getChildren().add(pieChart);
+			bp.setCenter(pan);
+					
+		});
 		
 		FontAwesomeIconView first  = new FontAwesomeIconView(FontAwesomeIcon.LINE_CHART,"30");
 		FontAwesomeIconView second  = new FontAwesomeIconView(FontAwesomeIcon.USER_SECRET,"30");
 		FontAwesomeIconView third  = new FontAwesomeIconView(FontAwesomeIcon.BAR_CHART,"30");
 		FontAwesomeIconView fourth  = new FontAwesomeIconView(FontAwesomeIcon.UNLOCK,"30");
 		FontAwesomeIconView fifth = new FontAwesomeIconView(FontAwesomeIcon.USER,"30");
+		FontAwesomeIconView sixth = new FontAwesomeIconView(FontAwesomeIcon.USERS,"30");
 		
 		HBox hb1 = new HBox(first,checkStock);
 		hb1.setSpacing(5);
@@ -344,8 +438,10 @@ public class AdminScene {
 		hb4.setSpacing(5);
 		HBox hb5 = new HBox(fifth,employeList);
 		hb5.setSpacing(5);
+		HBox hb6 = new HBox(sixth,usersList);
+		hb6.setSpacing(5);
 		
-		FlowPane flwp = new FlowPane(hb1,hb2,hb5,hb3,hb4);
+		FlowPane flwp = new FlowPane(hb1,hb2,hb5,hb6,hb3,hb4);
 		flwp.setVgap(15);
 		flwp.setHgap(25);
 		flwp.setAlignment(Pos.CENTER);
@@ -400,6 +496,18 @@ public class AdminScene {
 
 		return prods;
 		
+	}
+	@SuppressWarnings({ "unchecked", "resource" })
+	public static ObservableList<User> setUserContent() throws FileNotFoundException, IOException, ClassNotFoundException{
+		String userName = "src/Database/firstUsers.dat";
+		ObjectInputStream readProd = new ObjectInputStream(new FileInputStream(userName));
+		ArrayList<User> user = (ArrayList<User>) readProd.readObject();
+		readProd.close();
+		ObservableList<User> userO = FXCollections.observableArrayList();
+		for(int i=0;i<user.size();i++) {
+			userO.add(user.get(i));
+		}
+		return userO;
 	}
 	public static void editTableContent(TableView<Employe> empT) throws FileNotFoundException, IOException {
 		String employeName = "src/Database/employe.dat";

@@ -1,10 +1,10 @@
-Bill made by : C1
+Bill made by : Cashier
 --------------------------
 Contact : Kevin Tervoli
 Phone : +355675622603
 Email : ktervoli20@epoka.edu.al
 Album Name : Damn
-Quantity : 48
+Quantity : 5
 Shipping adress : Gramsh
 --------------------------
-Price to pay : 36000.0
+Price to pay : 3600.0

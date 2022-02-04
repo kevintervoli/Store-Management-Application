@@ -26,9 +26,9 @@ public class CreateUsers {
 		ostream.close();
 		
 		
-		Employe e1 = new Employe("C1","C1S","cashier1",350);
-		Employe e2 = new Employe("C2","C2S","cashier2",200);
-		Employe e3 = new Employe("C2","C2S","cashier3",480);
+		Employe e1 = new Employe("Cashier","Cashier","cashier",450,0);
+		Employe e2 = new Employe("Manager","Manager","manager",550,0);
+		Employe e3 = new Employe("Admin","Admin","admin",750,0);
 		c.add(e1);
 		c.add(e2);
 		c.add(e3);

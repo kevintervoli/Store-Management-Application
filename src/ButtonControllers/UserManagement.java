@@ -241,22 +241,6 @@ public class UserManagement{
 		        fail.showAndWait();
 				st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 			}
-			else if(status.getText().matches("[A-Za-z]+")) {
-				Stage st = new Stage();
-				Alert fail= new Alert(AlertType.ERROR);
-		        fail.setHeaderText("FAIL");
-		        fail.setContentText("Check status field !");
-		        fail.showAndWait();
-				st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
-			}
-			else if (Integer.parseInt(statusf.getText())!=0 ||Integer.parseInt(statusf.getText())!=1 || Integer.parseInt(statusf.getText())!=2) {
-				Stage st = new Stage();
-				Alert fail= new Alert(AlertType.ERROR);
-		        fail.setHeaderText("FAIL");
-		        fail.setContentText("Check status field !");
-		        fail.showAndWait();
-				st.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
-			}
 			else {
 				int cnt=0;
 				for(int i=0;i<use.size();i++) {
@@ -354,7 +338,7 @@ public class UserManagement{
 	public static void addEmploye(String name,String surname,String username,double salary) throws FileNotFoundException, IOException, ClassNotFoundException {
 		String employeName = "src/Database/employe.dat";
 		ObjectInputStream secondinp = new ObjectInputStream(new FileInputStream(employeName));
-		Employe newEmploye = new Employe(name,surname,username,salary);
+		Employe newEmploye = new Employe(name,surname,username,salary,0);
 		ArrayList<Employe> employe= (ArrayList<Employe>) secondinp.readObject();
 		employe.add(newEmploye);
 		ObjectOutputStream soutstream = new ObjectOutputStream(new FileOutputStream(employeName));
