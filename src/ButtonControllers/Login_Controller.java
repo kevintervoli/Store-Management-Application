@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 
 public class Login_Controller extends Login implements EventHandler<ActionEvent>{
 	public static String currentUser;
+	public static int currentStatus;
 	Color backGround = Color.web("#C4D6ED");
 	public Login_Controller() {
 		super(stage);
@@ -79,6 +80,7 @@ public class Login_Controller extends Login implements EventHandler<ActionEvent>
 					if(password.getText().equals(readUser.get(j).getPassword())) {
 						currentUser=username.getText();
 						if(readUser.get(j).getUserStatus()==0) {
+							currentStatus=0;
 							text="Login Successfully !";
 							Stage newWindow = new Stage();
 							new CashierScene(Login.stage);
@@ -90,6 +92,7 @@ public class Login_Controller extends Login implements EventHandler<ActionEvent>
 							newWindow.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 						}
 						else if(readUser.get(j).getUserStatus()==1) {
+							currentStatus=1;
 							text="Login Successfully !";
 							Stage newWindow = new Stage();
 							Scene scene = null;
@@ -112,6 +115,7 @@ public class Login_Controller extends Login implements EventHandler<ActionEvent>
 							newWindow.getIcons().add(new Image(new File("Images/icon.png").toURI().toString()));
 						}
 						else if(readUser.get(j).getUserStatus()==2) {
+							currentStatus=2;
 							text="Login Successfully !";
 							Stage newWindow = new Stage();
 							Scene scene = new Scene(AdminScene.createAdminScene());

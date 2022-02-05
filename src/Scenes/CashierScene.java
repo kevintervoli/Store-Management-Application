@@ -36,7 +36,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class CashierScene {
-	protected static BorderPane adminPane = new BorderPane();
+	protected static BorderPane bp = new BorderPane();
 	public static Stage cashierStage;
 	public CashierScene(Stage pmstage) {
 		cashierStage=pmstage;
@@ -48,7 +48,6 @@ public class CashierScene {
 		Color color=Color.web("#FFFFFF");
 		Background bckgStyle = new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY));
 		StackPane pane = new StackPane();
-		BorderPane adminPane = new BorderPane();
 		pane.getStylesheets().add("css/style.css"); 
 		FileInputStream imgStream = null;
 		try {
@@ -68,7 +67,7 @@ public class CashierScene {
 			TableView<Products> table = new TableView<Products>();
 			table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 			BorderPane tab = new BorderPane();
-			adminPane.setCenter(tab);
+			bp.setCenter(tab);
 			
 			table.setEditable(true);
 			table.getStylesheets().add("css/style.css");
@@ -135,7 +134,7 @@ public class CashierScene {
 			pan.setAlignment(Pos.TOP_CENTER);
 			pan.setHgap(10);
 			pan.setVgap(10);
-			adminPane.setCenter(pan);
+			bp.setCenter(pan);
 		});
 		
 		logOut.setFont(Font.font("OCR A Extended",15));
@@ -186,9 +185,9 @@ public class CashierScene {
 		centerCashier.setAlignment(Pos.CENTER);
 		centerCashier.setPadding(new Insets(15,0,0,0));
 		centerCashier.setBackground(bckgStyle);
-		adminPane.setTop(flwp);
-		adminPane.setCenter(centerCashier);
-		pane.getChildren().add(adminPane);
+		bp.setTop(flwp);
+		bp.setCenter(centerCashier);
+		pane.getChildren().add(bp);
 		pane.setPrefSize(1540,800);
 		return pane;
 	}

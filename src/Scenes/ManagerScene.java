@@ -56,7 +56,7 @@ import javafx.stage.Stage;
 
 
 public class ManagerScene {
-	protected static BorderPane adminPane = new BorderPane();
+	protected static BorderPane bp = new BorderPane();
 	@SuppressWarnings({ "unchecked", "unused", "rawtypes" })
 	public static StackPane createManagerScene() throws FileNotFoundException, ClassNotFoundException, IOException {
 		Color btnColor= Color.web("#053C5E"); 
@@ -66,7 +66,6 @@ public class ManagerScene {
 		Background bckgStyle = new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY));
 		Background tfBack = new Background(new BackgroundFill(tfCol, CornerRadii.EMPTY, Insets.EMPTY));
 		StackPane pane = new StackPane();
-		BorderPane adminPane = new BorderPane();
 		
 		FileInputStream imgStream = null;
 		try {
@@ -103,7 +102,7 @@ public class ManagerScene {
 			pan.setAlignment(Pos.TOP_CENTER);
 			pan.setHgap(10);
 			pan.setVgap(10);
-			adminPane.setCenter(pan);
+			bp.setCenter(pan);
 		});
 
 		pane.getStylesheets().add("css/style.css"); 
@@ -159,7 +158,7 @@ public class ManagerScene {
 			charts.setAlignment(Pos.CENTER);
 			charts.setSpacing(10);
 			pan.getChildren().add(charts);
-			adminPane.setCenter(pan);
+			bp.setCenter(pan);
 					
 		});
 		checkStock.setFont(Font.font("OCR A Extended",15));
@@ -171,7 +170,7 @@ public class ManagerScene {
 			TableView<Products> table = new TableView<Products>();
 			table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 			BorderPane tab = new BorderPane();
-			adminPane.setCenter(tab);
+			bp.setCenter(tab);
 			
 			table.setEditable(true);
 			table.getStylesheets().add("css/style.css");
@@ -365,7 +364,7 @@ public class ManagerScene {
 			VBox stab = new VBox();
 			stab.getChildren().addAll(empT);
 			stab.setPrefSize(700, 500);
-			adminPane.setCenter(stab);
+			bp.setCenter(stab);
 			
 		});
 		
@@ -426,9 +425,9 @@ public class ManagerScene {
 		centerCashier.setAlignment(Pos.CENTER);
 		centerCashier.setPadding(new Insets(15,0,0,0));
 		centerCashier.setBackground(bckgStyle);
-		adminPane.setTop(flwp);
-		adminPane.setCenter(centerCashier);
-		pane.getChildren().add(adminPane);
+		bp.setTop(flwp);
+		bp.setCenter(centerCashier);
+		pane.getChildren().add(bp);
 		pane.setPrefSize(1540,800);
 		pane.requestFocus();
 		pane.setOnMousePressed(e->pane.requestFocus());

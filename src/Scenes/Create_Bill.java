@@ -34,6 +34,7 @@ import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -66,12 +67,13 @@ public class Create_Bill{
 	
 	protected static Button add;
 	protected static Button remove;
-	protected static Button createButton,cancel;
+	protected static Button createButton;
 	protected static Button generateBill;
 	protected static TableView<Products> produkte;
 	protected static TableView<Products> items;
 	@SuppressWarnings("unused")
 	private static ArrayList<Products> billArray = new ArrayList<Products>();
+	protected static BorderPane bp = new BorderPane();
 	static int billNum=0;
 	static String billN="0";
 	public Create_Bill() {
@@ -151,8 +153,7 @@ public class Create_Bill{
 		fields.getChildren().addAll(first,second);
 		createButton = new Button("Create Bill");
 		createButton.setId("logB2");
-		cancel = new Button("Cancel");
-		cancel.setId("logB2");
+		
 		fields.setAlignment(Pos.CENTER);
 		fields.setSpacing(25);
 		createButton.setOnAction(e->{
@@ -207,7 +208,7 @@ public class Create_Bill{
 		});
 		
 		HBox buton = new HBox();
-		buton.getChildren().addAll(createButton,cancel);
+		buton.getChildren().addAll(createButton);
 		buton.setAlignment(Pos.CENTER);
 		buton.setSpacing(15);
 		VBox combine = new VBox();
@@ -264,7 +265,15 @@ public class Create_Bill{
 		});
 		generateBill = new Button("GENERATE BILL");
 		generateBill.setOnAction(e->{
-			AdminScene.adminPane.setCenter(Create_Bill.billWindow());
+			if(Login_Controller.currentStatus==0) {
+				CashierScene.bp.setCenter(Create_Bill.billWindow());
+			}
+			else if(Login_Controller.currentStatus==0) {
+				ManagerScene.bp.setCenter(Create_Bill.billWindow());
+			}
+			else {
+				AdminScene.bp.setCenter(Create_Bill.billWindow());
+			}
 			produkte.getItems().clear();
 		});
 		pane.getStylesheets().add("css/style.css");
@@ -278,7 +287,14 @@ public class Create_Bill{
 			        fail.setContentText("Empty field !");
 			        fail.showAndWait();
 				}
+				else if(tf2.getText().matches("[^0-9]+")) {
+					Alert fail= new Alert(AlertType.WARNING);
+			        fail.setHeaderText("FAIL");
+			        fail.setContentText("Enter an integer !");
+			        fail.showAndWait();
+				}
 				else {
+					
 					String productsFile = "src/Database/products.dat";
 					ObjectInputStream readProd = new ObjectInputStream(new FileInputStream(productsFile));
 					ArrayList<Products> prod = ((ArrayList<Products>) readProd.readObject());
@@ -297,7 +313,7 @@ public class Create_Bill{
 				        fail.showAndWait();
 					}
 					else {
-						if(prod.get(index).getQuantity()<Integer.parseInt(tf2.getText())) {
+						if(prod.get(index).getQuantity()<Integer.parseInt(tf2.getText()) || prod.get(index).getQuantity()==0) {
 							Alert fail= new Alert(AlertType.WARNING);
 					        fail.setHeaderText("FAIL");
 					        fail.setContentText("Not enough stock !");
@@ -505,7 +521,10 @@ public class Create_Bill{
 			}
 		}
 		if(quantity==produktArr.get(index).getQuantity()) {
-			produktArr.remove(produktArr.get(index));	
+			produktArr.remove(index);	
+		}
+		else if(quantity>produktArr.get(index).getQuantity() || quantity==0) {
+			produktArr.remove(index);	
 		}
 		else {
 			produktArr.get(index).setQuantity(produktArr.get(index).getQuantity()-quantity);

@@ -68,7 +68,7 @@ public class AdminScene {
 	protected static TextField t3 = new TextField();
 	protected static TextField t4 = new TextField();
 	protected static TextField t5 = new TextField();
-	protected static BorderPane adminPane = new BorderPane();
+	protected static BorderPane bp = new BorderPane();
 	static BorderPane tab = new BorderPane();
 
 
@@ -127,7 +127,7 @@ public class AdminScene {
 			pan.setAlignment(Pos.TOP_CENTER);
 			pan.setHgap(10);
 			pan.setVgap(10);
-			adminPane.setCenter(pan);
+			bp.setCenter(pan);
 		});
 		employeList.setOnAction(e->{
 			Color col = Color.web("#C3C9E9");
@@ -140,25 +140,28 @@ public class AdminScene {
 			
 			TableColumn<Employe,String> name = new TableColumn<>("NAME");
 			name.setMinWidth(200);
+			name.setEditable(true);
 			name.setCellValueFactory(new PropertyValueFactory<>("Name"));
+			name.setEditable(true);
 	
-			
 			TableColumn<Employe,String> surname = new TableColumn<>("SURNAME");
 			surname.setMinWidth(200);
 			surname.setCellValueFactory(new PropertyValueFactory<>("Surname"));
+			surname.setEditable(true);
 			
 			TableColumn<Employe,String> username = new TableColumn<>("USERNAME");
 			username.setMinWidth(200);
 			username.setCellValueFactory(new PropertyValueFactory<>("Username"));
+			username.setEditable(true);
 			
 			TableColumn<Employe,String> salary = new TableColumn<>("SALARY");
 			salary.setMinWidth(200);
 			salary.setCellValueFactory(new PropertyValueFactory<>("salary"));
+			salary.setEditable(true);
 			
 			TableColumn<Employe,Integer> soldItems = new TableColumn<>("SOLD ITEMS");
 			soldItems.setMinWidth(200);
 			soldItems.setCellValueFactory(new PropertyValueFactory<>("soldItem"));
-			
 			empT.getColumns().addAll(name,surname,username,salary,soldItems);
 			try {
 				empT.setItems((ObservableList<Employe>)AdminScene.setContent());
@@ -169,10 +172,10 @@ public class AdminScene {
 			VBox stab = new VBox();
 			stab.getChildren().addAll(empT);
 			stab.setPrefSize(700, 500);
-			adminPane.setCenter(stab);
+			bp.setCenter(stab);
 		});
 		checkStock.setOnAction(e->{
-			adminPane.setCenter(tab);
+			bp.setCenter(tab);
 			Color col = Color.web("#FFFFFF");
 			TableView<Products> table = new TableView<Products>();
 			table.setPrefHeight(500);
@@ -320,15 +323,32 @@ public class AdminScene {
 				@Override
 				public void handle(ActionEvent arg0) {
 					try {
-						if(t1.getText().matches("")){
+						if(t1.getText().isEmpty()|| t2.getText().isEmpty() || t3.getText().isEmpty()|| t4.getText().isEmpty() || t5.getText().isEmpty()){
 							Alert fail= new Alert(AlertType.WARNING);
 					        fail.setHeaderText("FAIL");
 					        fail.setContentText("Empty field !");
 					        fail.showAndWait();
 			}else {
-				table.getItems().clear();
-				removeProduct(t1.getText(),Integer.parseInt(t2.getText()),Double.parseDouble(t5.getText()));
-				table.setItems((ObservableList<Products>) addProdukte());
+				String productsFile = "src/Database/products.dat";
+				ObjectInputStream readProd = new ObjectInputStream(new FileInputStream(productsFile));
+				ArrayList<Products> prod = ((ArrayList<Products>) readProd.readObject());
+				int cnt=0;
+				for(int i=0;i<prod.size();i++) {
+					if(prod.get(i).getName().equals(t1.getText())) {
+						cnt++;
+					}
+				}
+				if(cnt!=0) {
+					table.getItems().clear();
+					removeProduct(t1.getText(),Integer.parseInt(t2.getText()),Double.parseDouble(t5.getText()));
+					table.setItems((ObservableList<Products>) addProdukte());
+				}
+				else {
+					Alert fail= new Alert(AlertType.ERROR);
+			        fail.setHeaderText("FAIL");
+			        fail.setContentText("Cant find album !");
+			        fail.showAndWait();
+				}
 			}
 
 					} catch (ClassNotFoundException | IOException e) {
@@ -341,7 +361,7 @@ public class AdminScene {
 			});
 		});
 		checkEmploye.setOnAction(e->{
-			adminPane.setCenter(UserManagement.createWindow());
+			bp.setCenter(UserManagement.createWindow());
 		});
 		logOut.setOnAction(e->{
 			((Stage)(((Node)e.getSource()).getScene().getWindow())).close();
@@ -390,7 +410,7 @@ public class AdminScene {
 			VBox stab = new VBox();
 			stab.getChildren().addAll(table);
 			stab.setPrefSize(700, 500);
-			adminPane.setCenter(stab);
+			bp.setCenter(stab);
 		});
 		checkStatistics.setOnAction(e->{
 			StackPane pan = new StackPane();
@@ -444,7 +464,7 @@ public class AdminScene {
 			charts.setAlignment(Pos.CENTER);
 			charts.setSpacing(10);
 			pan.getChildren().add(charts);
-			adminPane.setCenter(pan);
+			bp.setCenter(pan);
 					
 		});
 		
@@ -494,9 +514,9 @@ public class AdminScene {
 		centerCashier.setAlignment(Pos.CENTER);
 		centerCashier.setPadding(new Insets(15,0,0,0));
 		centerCashier.setBackground(bckgStyle);
-		adminPane.setTop(flwp);
-		adminPane.setCenter(centerCashier);
-		pane.getChildren().add(adminPane);
+		bp.setTop(flwp);
+		bp.setCenter(centerCashier);
+		pane.getChildren().add(bp);
 		pane.setPrefSize(1540,800);
 		return pane;
 	}
