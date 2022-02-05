@@ -29,7 +29,6 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -54,11 +53,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 
 public class ManagerScene {
-	@SuppressWarnings({ "unchecked", "unused" })
+	protected static BorderPane adminPane = new BorderPane();
+	@SuppressWarnings({ "unchecked", "unused", "rawtypes" })
 	public static StackPane createManagerScene() throws FileNotFoundException, ClassNotFoundException, IOException {
 		Color btnColor= Color.web("#053C5E"); 
 		Color color=Color.web("#FFFFFF");
@@ -67,7 +66,7 @@ public class ManagerScene {
 		Background bckgStyle = new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY));
 		Background tfBack = new Background(new BackgroundFill(tfCol, CornerRadii.EMPTY, Insets.EMPTY));
 		StackPane pane = new StackPane();
-		BorderPane bp = new BorderPane();
+		BorderPane adminPane = new BorderPane();
 		
 		FileInputStream imgStream = null;
 		try {
@@ -89,7 +88,22 @@ public class ManagerScene {
 		createBill.setId("logB");
 		createBill.setOnAction(e->{
 			new Create_Bill();
-			bp.setCenter(Create_Bill.billWindow());
+			VBox vbo = null;
+			try {
+				vbo = new VBox(Create_Bill.table(),Create_Bill.tableItems());
+			} catch (ClassNotFoundException | IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			FlowPane pan = new FlowPane();
+			VBox mid = new VBox(Create_Bill.addItemsToTableBill());
+			mid.setAlignment(Pos.CENTER);
+			mid.setSpacing(10);
+			pan.getChildren().addAll(mid,vbo);
+			pan.setAlignment(Pos.TOP_CENTER);
+			pan.setHgap(10);
+			pan.setVgap(10);
+			adminPane.setCenter(pan);
 		});
 
 		pane.getStylesheets().add("css/style.css"); 
@@ -145,7 +159,7 @@ public class ManagerScene {
 			charts.setAlignment(Pos.CENTER);
 			charts.setSpacing(10);
 			pan.getChildren().add(charts);
-			bp.setCenter(pan);
+			adminPane.setCenter(pan);
 					
 		});
 		checkStock.setFont(Font.font("OCR A Extended",15));
@@ -157,7 +171,7 @@ public class ManagerScene {
 			TableView<Products> table = new TableView<Products>();
 			table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 			BorderPane tab = new BorderPane();
-			bp.setCenter(tab);
+			adminPane.setCenter(tab);
 			
 			table.setEditable(true);
 			table.getStylesheets().add("css/style.css");
@@ -351,7 +365,7 @@ public class ManagerScene {
 			VBox stab = new VBox();
 			stab.getChildren().addAll(empT);
 			stab.setPrefSize(700, 500);
-			bp.setCenter(stab);
+			adminPane.setCenter(stab);
 			
 		});
 		
@@ -412,9 +426,9 @@ public class ManagerScene {
 		centerCashier.setAlignment(Pos.CENTER);
 		centerCashier.setPadding(new Insets(15,0,0,0));
 		centerCashier.setBackground(bckgStyle);
-		bp.setTop(flwp);
-		bp.setCenter(centerCashier);
-		pane.getChildren().add(bp);
+		adminPane.setTop(flwp);
+		adminPane.setCenter(centerCashier);
+		pane.getChildren().add(adminPane);
 		pane.setPrefSize(1540,800);
 		pane.requestFocus();
 		pane.setOnMousePressed(e->pane.requestFocus());
@@ -528,6 +542,7 @@ public class ManagerScene {
 		outstream.close();
 		setTableContent();
 	}
+	@SuppressWarnings({ "unchecked", "resource" })
 	public static void checkLeftStock() throws FileNotFoundException, IOException, ClassNotFoundException {
 		String productsFile = "src/Database/products.dat";
 		ObjectInputStream readProd = new ObjectInputStream(new FileInputStream(productsFile));

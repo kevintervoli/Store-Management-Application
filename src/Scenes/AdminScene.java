@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import javax.swing.SpringLayout.Constraints;
 import ButtonControllers.UserManagement;
 import Login_GUI.Login;
 import User_Profiles.Employe;
@@ -31,15 +30,12 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -66,9 +62,17 @@ public class AdminScene {
 	private static Button employeList ;
 	private static Button usersList;
 	private static Button createBill;
+	public static String albumName;
+	protected static TextField t1 = new TextField();  
+	protected static TextField t2 = new TextField();
+	protected static TextField t3 = new TextField();
+	protected static TextField t4 = new TextField();
+	protected static TextField t5 = new TextField();
+	protected static BorderPane adminPane = new BorderPane();
 	static BorderPane tab = new BorderPane();
 
-	@SuppressWarnings({ "unchecked", "unused", "hiding" })
+
+	@SuppressWarnings({ "unchecked", "unused", "rawtypes" })
 	public static StackPane createAdminScene() { 
 		Color btnColor= Color.web("#053C5E"); 
 		Color color=Color.web("#FFFFFF");
@@ -77,7 +81,6 @@ public class AdminScene {
 		Background bckgStyle = new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY));
 		Background tfBack = new Background(new BackgroundFill(tfCol, CornerRadii.EMPTY, Insets.EMPTY));
 		StackPane pane = new StackPane();
-		BorderPane bp = new BorderPane();
 		pane.getStylesheets().add("css/style.css"); 
 		FileInputStream imgStream = null;
 		try {
@@ -109,7 +112,22 @@ public class AdminScene {
 		createBill.setId("logB");
 		createBill.setOnAction(e->{
 			new Create_Bill();
-			bp.setCenter(Create_Bill.billWindow());
+			VBox vbo = null;
+			try {
+				vbo = new VBox(Create_Bill.table(),Create_Bill.tableItems());
+			} catch (ClassNotFoundException | IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			FlowPane pan = new FlowPane();
+			VBox mid = new VBox(Create_Bill.addItemsToTableBill());
+			mid.setAlignment(Pos.CENTER);
+			mid.setSpacing(10);
+			pan.getChildren().addAll(mid,vbo);
+			pan.setAlignment(Pos.TOP_CENTER);
+			pan.setHgap(10);
+			pan.setVgap(10);
+			adminPane.setCenter(pan);
 		});
 		employeList.setOnAction(e->{
 			Color col = Color.web("#C3C9E9");
@@ -151,10 +169,10 @@ public class AdminScene {
 			VBox stab = new VBox();
 			stab.getChildren().addAll(empT);
 			stab.setPrefSize(700, 500);
-			bp.setCenter(stab);
+			adminPane.setCenter(stab);
 		});
 		checkStock.setOnAction(e->{
-			bp.setCenter(tab);
+			adminPane.setCenter(tab);
 			Color col = Color.web("#FFFFFF");
 			TableView<Products> table = new TableView<Products>();
 			table.setPrefHeight(500);
@@ -166,50 +184,20 @@ public class AdminScene {
 			name.setMinWidth(200);
 			name.setEditable(true);
 			name.setCellValueFactory(new PropertyValueFactory<Products,String>("Name"));
-			name.setOnEditCommit((CellEditEvent<Products, String> t)->{
-				try {
-					AdminScene.addProduct();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}	
-			});
+
 			
 			TableColumn<Products,String> singer = new TableColumn<Products,String>("SINGER");
 			singer.setMinWidth(200);
 			singer.setEditable(true);
 			singer.setCellValueFactory(new PropertyValueFactory<Products,String>("Singer"));
 			singer.setResizable(true);
-			singer.setOnEditCommit((CellEditEvent<Products, String> t)->{
-				try {
-					AdminScene.addProduct();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}	
-			});
+			
 			TableColumn<Products,String> genre = new TableColumn<Products,String>("GENRE");
 			genre.setMinWidth(200);
 			genre.setEditable(true);
 			genre.setCellValueFactory(new PropertyValueFactory<Products,String>("Genre"));
 			genre.setResizable(true);
-			genre.setOnEditCommit((CellEditEvent<Products, String> t)->{
-				try {
-					AdminScene.addProduct();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}	
-			});
+
 			TableColumn<Products,Long> quantity = new TableColumn<Products,Long>("QUANTITY");
 			quantity.setEditable(true);
 			quantity.setMinWidth(200);
@@ -226,17 +214,17 @@ public class AdminScene {
 				e2.printStackTrace();
 			}
 			try {
-				table.setItems((ObservableList<Products>) addProduct());
+				table.setItems((ObservableList<Products>) addProdukte());
 			} catch (ClassNotFoundException | IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		
-			TextField t1 = new TextField();  
-			TextField t2 = new TextField();
-			TextField t3 = new TextField();
-			TextField t4 = new TextField();
-			TextField t5 = new TextField();
+			 t1 = new TextField();  
+			 t2 = new TextField();
+			 t3 = new TextField();
+			 t4 = new TextField();
+			 t5 = new TextField();
 
 			
 			tab.getStylesheets().add("css/style.css");
@@ -247,6 +235,7 @@ public class AdminScene {
 			
 			t1.setPromptText("Enter the album name :");
 			t1.setAlignment(Pos.CENTER);
+			
 			
 			t2.setPromptText("Enter the quantity :");
 			t2.setFont(Font.font("OCR A Extended",12));
@@ -317,7 +306,7 @@ public class AdminScene {
 						try {
 							table.getItems().clear();
 							checkStockValid(t1.getText(),t4.getText(),t3.getText(),Integer.parseInt(t2.getText()),Double.parseDouble(t5.getText()));
-							table.setItems((ObservableList<Products>) addProduct());
+							table.setItems((ObservableList<Products>) addProdukte());
 						} catch (NumberFormatException | ClassNotFoundException | IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -339,7 +328,7 @@ public class AdminScene {
 			}else {
 				table.getItems().clear();
 				removeProduct(t1.getText(),Integer.parseInt(t2.getText()),Double.parseDouble(t5.getText()));
-				table.setItems((ObservableList<Products>) addProduct());
+				table.setItems((ObservableList<Products>) addProdukte());
 			}
 
 					} catch (ClassNotFoundException | IOException e) {
@@ -352,7 +341,7 @@ public class AdminScene {
 			});
 		});
 		checkEmploye.setOnAction(e->{
-			bp.setCenter(UserManagement.createWindow());
+			adminPane.setCenter(UserManagement.createWindow());
 		});
 		logOut.setOnAction(e->{
 			((Stage)(((Node)e.getSource()).getScene().getWindow())).close();
@@ -401,7 +390,7 @@ public class AdminScene {
 			VBox stab = new VBox();
 			stab.getChildren().addAll(table);
 			stab.setPrefSize(700, 500);
-			bp.setCenter(stab);
+			adminPane.setCenter(stab);
 		});
 		checkStatistics.setOnAction(e->{
 			StackPane pan = new StackPane();
@@ -455,7 +444,7 @@ public class AdminScene {
 			charts.setAlignment(Pos.CENTER);
 			charts.setSpacing(10);
 			pan.getChildren().add(charts);
-			bp.setCenter(pan);
+			adminPane.setCenter(pan);
 					
 		});
 		
@@ -505,14 +494,14 @@ public class AdminScene {
 		centerCashier.setAlignment(Pos.CENTER);
 		centerCashier.setPadding(new Insets(15,0,0,0));
 		centerCashier.setBackground(bckgStyle);
-		bp.setTop(flwp);
-		bp.setCenter(centerCashier);
-		pane.getChildren().add(bp);
+		adminPane.setTop(flwp);
+		adminPane.setCenter(centerCashier);
+		pane.getChildren().add(adminPane);
 		pane.setPrefSize(1540,800);
 		return pane;
 	}
 	@SuppressWarnings("unchecked")
-	public  static ObservableList<Products> addProduct() throws FileNotFoundException, IOException, ClassNotFoundException {
+	public  static ObservableList<Products> addProdukte() throws FileNotFoundException, IOException, ClassNotFoundException {
 		String productsFile = "src/Database/products.dat";
 		ObjectInputStream readProd = new ObjectInputStream(new FileInputStream(productsFile));
 		ArrayList<Products> prod = (ArrayList<Products>) readProd.readObject();

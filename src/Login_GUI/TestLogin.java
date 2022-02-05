@@ -4,10 +4,7 @@ package Login_GUI;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
-import Scenes.AdminScene;
 import Scenes.CashierScene;
-import Scenes.Create_Bill;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;

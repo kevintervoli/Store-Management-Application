@@ -12,27 +12,19 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -44,6 +36,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class CashierScene {
+	protected static BorderPane adminPane = new BorderPane();
 	public static Stage cashierStage;
 	public CashierScene(Stage pmstage) {
 		cashierStage=pmstage;
@@ -55,7 +48,7 @@ public class CashierScene {
 		Color color=Color.web("#FFFFFF");
 		Background bckgStyle = new Background(new BackgroundFill(color, CornerRadii.EMPTY, Insets.EMPTY));
 		StackPane pane = new StackPane();
-		BorderPane bp = new BorderPane();
+		BorderPane adminPane = new BorderPane();
 		pane.getStylesheets().add("css/style.css"); 
 		FileInputStream imgStream = null;
 		try {
@@ -75,7 +68,7 @@ public class CashierScene {
 			TableView<Products> table = new TableView<Products>();
 			table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 			BorderPane tab = new BorderPane();
-			bp.setCenter(tab);
+			adminPane.setCenter(tab);
 			
 			table.setEditable(true);
 			table.getStylesheets().add("css/style.css");
@@ -127,7 +120,22 @@ public class CashierScene {
 		createBill.setId("logB");
 		createBill.setOnAction(e->{
 			new Create_Bill();
-			bp.setCenter(Create_Bill.billWindow());
+			VBox vbo = null;
+			try {
+				vbo = new VBox(Create_Bill.table(),Create_Bill.tableItems());
+			} catch (ClassNotFoundException | IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			FlowPane pan = new FlowPane();
+			VBox mid = new VBox(Create_Bill.addItemsToTableBill());
+			mid.setAlignment(Pos.CENTER);
+			mid.setSpacing(10);
+			pan.getChildren().addAll(mid,vbo);
+			pan.setAlignment(Pos.TOP_CENTER);
+			pan.setHgap(10);
+			pan.setVgap(10);
+			adminPane.setCenter(pan);
 		});
 		
 		logOut.setFont(Font.font("OCR A Extended",15));
@@ -178,9 +186,9 @@ public class CashierScene {
 		centerCashier.setAlignment(Pos.CENTER);
 		centerCashier.setPadding(new Insets(15,0,0,0));
 		centerCashier.setBackground(bckgStyle);
-		bp.setTop(flwp);
-		bp.setCenter(centerCashier);
-		pane.getChildren().add(bp);
+		adminPane.setTop(flwp);
+		adminPane.setCenter(centerCashier);
+		pane.getChildren().add(adminPane);
 		pane.setPrefSize(1540,800);
 		return pane;
 	}
