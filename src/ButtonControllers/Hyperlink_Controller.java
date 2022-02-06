@@ -7,7 +7,7 @@ public class Hyperlink_Controller implements EventHandler<ActionEvent> {
 
 	@Override
 	public void handle(ActionEvent arg0) {
-		
+
 	}
-	
+
 }

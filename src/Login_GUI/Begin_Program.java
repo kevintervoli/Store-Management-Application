@@ -1,6 +1,5 @@
 package Login_GUI;
 
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,14 +9,15 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-public class Begin_Program extends Application{
+public class Begin_Program extends Application {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
 		launch(args);
 	}
+
 	@SuppressWarnings("unused")
 	@Override
-	public void start(Stage arg0){
+	public void start(Stage arg0) {
 		Login login = new Login(arg0);
 		new CashierScene(arg0);
 		Scene scene = new Scene(Login.login());
