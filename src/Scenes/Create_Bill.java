@@ -74,10 +74,15 @@ public class Create_Bill {
 	static int billNum = 0;
 	static String billN = "0";
 
+	
+	
 	public Create_Bill() {
 		billDate = new Date();
 	}
 
+	
+	
+	
 	@SuppressWarnings({ "unused", "unchecked", "resource" })
 	public static BorderPane billWindow() {
 		BorderPane pane = new BorderPane();
@@ -462,7 +467,7 @@ public class Create_Bill {
 	@SuppressWarnings("unchecked")
 	protected static void addBill(String currentUser, String contact, String phone, String email, String shipping,
 			double payment) throws FileNotFoundException, IOException, ClassNotFoundException {
-		String billName = "Bill" + billDate.toString().replaceAll("[\\s:]+", "-") + ".txt";
+		String billName = "Bill " + billDate.toString().replaceAll("[\\s:]+", "-") + ".txt";
 		String bills = "src/Bills/" + billName;
 		String employeName = "src/Database/employe.dat";
 		ObjectInputStream readProd = new ObjectInputStream(new FileInputStream(employeName));
