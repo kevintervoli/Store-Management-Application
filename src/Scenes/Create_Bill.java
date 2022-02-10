@@ -164,7 +164,7 @@ public class Create_Bill {
 					fail.setContentText("Check empty fields");
 					fail.showAndWait();
 				} else {
-					if (phone.getText().matches("[0-9]{9}") || phone.getText().matches("\\+{1}[0-9]{12}")) {
+					if (phone.getText().matches("[0-9]{10}") || phone.getText().matches("\\+{1}[0-9]{12}")) {
 						addBill(Login_Controller.currentUser, contact.getText(), phone.getText(), email.getText(),
 								shippingfield.getText(), priceToPay());
 						contact.clear();
@@ -268,13 +268,22 @@ public class Create_Bill {
 		});
 		generateBill = new Button("GENERATE BILL");
 		generateBill.setOnAction(e -> {
-			if (Login_Controller.currentStatus == 0) {
-				CashierScene.bp.setCenter(Create_Bill.billWindow());
-			} else if (Login_Controller.currentStatus == 1) {
-				ManagerScene.bp.setCenter(Create_Bill.billWindow());
-			} else {
-				AdminScene.bp.setCenter(Create_Bill.billWindow());
+			if(tf1.getText().isEmpty() && tf2.getText().isEmpty()) {
+				Alert fail = new Alert(AlertType.ERROR);
+				fail.setHeaderText("FAIL");
+				fail.setContentText("CAN NOT GENERATE EMPTY BILL !");
+				fail.showAndWait();
 			}
+			else {
+				if (Login_Controller.currentStatus == 0) {
+					CashierScene.bp.setCenter(Create_Bill.billWindow());
+				} else if (Login_Controller.currentStatus == 1) {
+					ManagerScene.bp.setCenter(Create_Bill.billWindow());
+				} else {
+					AdminScene.bp.setCenter(Create_Bill.billWindow());
+				}
+			}
+			
 			produkte.getItems().clear();
 		});
 		pane.getStylesheets().add("css/style.css");
